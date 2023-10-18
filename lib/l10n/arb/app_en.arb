@@ -1,0 +1,44 @@
+{
+  "@@locale": "en",
+  "startVeryGoodGame": "Start the Very Good Game",
+  "@startVeryGoodGame": {
+    "description": "The initial start button of the game application"
+  },
+  "titleAppBarTitle": "Crystal Ball",
+  "@titleAppBarTitle": {
+    "description": "Text shown in the AppBar of the Title Page"
+  },
+  "titleButtonStart": "Start",
+  "@titleButtonStart": {
+    "description": "Text shown in the start Button of the Title Page"
+  },
+  "loading": "Loading {label}...",
+  "@loading": {
+    "description": "Text for the loading page",
+    "placeholders": {
+      "label": {
+        "type": "String",
+        "example": "Stuff",
+        "description": "Label for what is being loaded"
+      }
+    }
+  },
+  "loadingPhaseLabel": "{loadingPhase, select, audio{Delightful music} images{Beautiful scenery} other{ }}",
+  "@loadingPhaseLabel": {
+    "description": "Loading phases",
+    "placeholders": {
+      "loadingPhase": {}
+    }
+  },
+  "counterText": "{count, plural, =1{You have tapped the unicorn 1 time} other{You have tapped the unicorn {count} times}}",
+  "@counterText": {
+    "description": "Text for the counter component",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "10",
+        "description": "The current count"
+      }
+    }
+  }
+}
