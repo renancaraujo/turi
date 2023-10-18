@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:crystal_ball/game/game.dart';
-import 'package:crystal_ball/l10n/l10n.dart';
 import 'package:flame/game.dart' hide Route;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -16,8 +16,15 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: GameView()),
+    return Scaffold(
+      body: SafeArea(
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<GameCubit>(create: (_) => GameCubit()),
+          ],
+          child: const GameView(),
+        ),
+      ),
     );
   }
 }
@@ -35,6 +42,7 @@ class _GameViewState extends State<GameView> {
   FlameGame? _game;
 
   late final random = Random();
+  late final gameCubit = context.read<GameCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +53,7 @@ class _GameViewState extends State<GameView> {
 
     _game ??= widget.game ??
         CrystalBallGame(
-          l10n: context.l10n,
+          gameCubit: gameCubit,
           textStyle: textStyle,
           random: random,
         );

@@ -13,14 +13,7 @@ class TitlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.titleAppBarTitle),
-      ),
-      body: const SafeArea(child: TitleView()),
-    );
+    return const Scaffold(body: SafeArea(child: TitleView()));
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:crystal_ball/game/game.dart';
 import 'package:crystal_ball/l10n/l10n.dart';
 import 'package:crystal_ball/loading/loading.dart';
 import 'package:flame/cache.dart';
@@ -39,7 +40,8 @@ class AppView extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const LoadingPage(),
+      // home: const LoadingPage(),
+      home: const GamePage(),
     );
   }
 }

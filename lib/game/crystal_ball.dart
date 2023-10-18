@@ -1,41 +1,78 @@
 import 'dart:math';
 
-import 'package:crystal_ball/game/components/platform_spawner.dart';
-import 'package:crystal_ball/l10n/l10n.dart';
+import 'package:crystal_ball/game/components/camera_target.dart';
+import 'package:crystal_ball/game/game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/painting.dart';
 
-class CrystalWorld extends World {}
+class CrystalWorld extends World {
+  CrystalWorld({
+    // ignore: strict_raw_type
+    required List<FlameBlocProvider> providers,
+    super.priority = -0x7fffffff,
+  }) {
+    flameMultiBlocProvider = FlameMultiBlocProvider(
+      providers: providers,
+      children: [
+        TheBall(position: Vector2.zero()),
+        Ground(),
+      ],
+    );
+    add(flameMultiBlocProvider);
+    add(cameraTarget);
+  }
 
-class CrystalBallGame extends FlameGame {
+  late final FlameMultiBlocProvider flameMultiBlocProvider;
+
+  late final cameraTarget = CameraTarget();
+}
+
+class CrystalBallGame extends FlameGame<CrystalWorld> {
   CrystalBallGame({
-    required this.l10n,
     required this.textStyle,
     required this.random,
+    required this.gameCubit,
   }) : super(
-          world: CrystalWorld(),
+          camera: CameraComponent.withFixedResolution(
+            width: kCameraSize.width,
+            height: kCameraSize.height,
+            backdrop: RectangleComponent(
+              paint: Paint()..color = const Color(0xFF000000),
+              size: kCameraSize.asVector2,
+              priority: -0x7ffffffF,
+            ),
+          ),
+          world: CrystalWorld(
+            providers: [
+              FlameBlocProvider<GameCubit, GameState>.value(
+                value: gameCubit,
+              ),
+            ],
+          ),
           children: [
             PlatformSpawner(random: random),
           ],
         ) {
+    camera.follow(world.cameraTarget);
     images.prefix = '';
   }
 
-  final AppLocalizations l10n;
+  @override
+  bool get debugMode => true;
 
   final TextStyle textStyle;
 
   final Random random;
 
+  final GameCubit gameCubit;
+
   int counter = 0;
 
   @override
-  Color backgroundColor() => const Color(0xFF2A48DF);
+  Color backgroundColor() => const Color(0xFF000000);
 
   @override
-  Future<void> onLoad() async {
-    camera.viewfinder.position = size / 2;
-    camera.viewfinder.zoom = 8;
-  }
+  Future<void> onLoad() async {}
 }

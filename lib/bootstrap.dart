@@ -33,7 +33,5 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     yield LicenseEntryWithLineBreaks(['poppins'], poppins);
   });
 
-
-
   runApp(await builder());
 }

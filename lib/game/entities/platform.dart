@@ -19,19 +19,43 @@ class Platform extends PositionComponent {
     required Vector2 super.position,
     required Vector2 super.size,
     required this.color,
-  }) : super(children: [
-          _InerPlatform(
-            size: size,
-            paint: color.paint,
-          ),
-        ]);
+  }) : super(
+          anchor: Anchor.center,
+          children: [
+            _InerPlatform(
+              size: size,
+              paint: color.paint,
+            ),
+          ],
+        );
 
   final PlatformColor color;
 }
 
-class _InerPlatform extends RectangleComponent with ParentIsA<Platform> {
+class _InerPlatform extends Component with ParentIsA<Platform> {
   _InerPlatform({
-    required Vector2 super.size,
-    required Paint super.paint,
-  }) : super(anchor: Anchor.center);
+    required Vector2 size,
+    required Paint paint,
+  }) : super(
+          children: [
+            RectangleComponent(
+              position: Vector2(size.x / 2, size.y / 2),
+              size: Vector2(size.x - (size.y), size.y),
+              anchor: Anchor.center,
+              paint: paint,
+            ),
+            CircleComponent(
+              position: Vector2(size.y / 2, size.y / 2),
+              radius: size.y / 2,
+              paint: paint,
+              anchor: Anchor.center,
+            ),
+            CircleComponent(
+              position: Vector2(size.x - size.y / 2, size.y / 2),
+              radius: size.y / 2,
+              paint: paint,
+              anchor: Anchor.center,
+            ),
+          ],
+        );
 }
