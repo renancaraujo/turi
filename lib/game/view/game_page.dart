@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:crystal_ball/game/game.dart';
 import 'package:crystal_ball/l10n/l10n.dart';
 import 'package:flame/game.dart' hide Route;
@@ -32,6 +34,8 @@ class GameView extends StatefulWidget {
 class _GameViewState extends State<GameView> {
   FlameGame? _game;
 
+  late final random = Random();
+
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -43,6 +47,7 @@ class _GameViewState extends State<GameView> {
         CrystalBallGame(
           l10n: context.l10n,
           textStyle: textStyle,
+          random: random,
         );
     return GameWidget(
       game: _game!,

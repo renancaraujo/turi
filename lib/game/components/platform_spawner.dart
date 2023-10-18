@@ -1,15 +1,16 @@
+import 'dart:math';
+
 import 'package:crystal_ball/game/game.dart';
 import 'package:flame/components.dart';
-import 'dart:math' as math;
 
 class PlatformSpawner extends Component with HasGameRef<CrystalBallGame> {
   PlatformSpawner({
-    required this.seed,
+    required this.random,
   }) {
     timer = initialTimer;
   }
 
-  final math.Random seed;
+  final Random random;
 
   static const interval = 2.0;
 

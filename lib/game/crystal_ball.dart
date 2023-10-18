@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:crystal_ball/game/components/platform_spawner.dart';
 import 'package:crystal_ball/l10n/l10n.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -9,8 +12,12 @@ class CrystalBallGame extends FlameGame {
   CrystalBallGame({
     required this.l10n,
     required this.textStyle,
+    required this.random,
   }) : super(
           world: CrystalWorld(),
+          children: [
+            PlatformSpawner(random: random),
+          ],
         ) {
     images.prefix = '';
   }
@@ -18,6 +25,8 @@ class CrystalBallGame extends FlameGame {
   final AppLocalizations l10n;
 
   final TextStyle textStyle;
+
+  final Random random;
 
   int counter = 0;
 
