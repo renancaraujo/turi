@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
 import 'package:flame/components.dart';
@@ -17,6 +18,7 @@ class CrystalWorld extends World {
     flameMultiBlocProvider = FlameMultiBlocProvider(
       providers: providers,
       children: [
+        Wall(),
         PlatformSpawner(random: random),
         GameStateController(),
         KeyboardHandlerSync(),
@@ -24,9 +26,12 @@ class CrystalWorld extends World {
         theBall = TheBall(position: Vector2.zero()),
         Ground(),
         reaper = Reaper(),
+        platformsContainer = RenderOnlyOnSamplerCanvas<PlatformsSamplerOwner>(),
       ],
     );
+
     add(flameMultiBlocProvider);
+
     add(cameraTarget);
   }
 
@@ -40,6 +45,8 @@ class CrystalWorld extends World {
 
   late final TheBall theBall;
 
+  late final RenderOnlyOnSamplerCanvas platformsContainer;
+
   final Random random;
 }
 
@@ -49,8 +56,11 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     required this.textStyle,
     required this.random,
     required this.gameCubit,
+    required this.platformsShader,
+    required this.pixelRatio,
   }) : super(
-          camera: CameraComponent.withFixedResolution(
+          camera: SamplerCamera.withFixedResolution(
+            samplerOwner: PlatformsSamplerOwner(platformsShader),
             width: kCameraSize.width,
             height: kCameraSize.height,
             backdrop: RectangleComponent(
@@ -58,6 +68,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
               size: kCameraSize.asVector2,
               priority: -0x7ffffffF,
             ),
+            pixelRatio: pixelRatio,
           ),
           world: CrystalWorld(
             random: random,
@@ -73,10 +84,11 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
   }
 
   final TextStyle textStyle;
-
   final Random random;
-
   final GameCubit gameCubit;
+  final double pixelRatio;
+
+  final FragmentShader platformsShader;
 
   int counter = 0;
 

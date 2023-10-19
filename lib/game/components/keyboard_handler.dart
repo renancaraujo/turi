@@ -9,11 +9,13 @@ class KeyboardHandlerSync extends Component
 
   @override
   Future<void> onLoad() async {
-    await add(KeyboardListenerComponent(
-      keyDown: {
-        LogicalKeyboardKey.space: onSpace,
-      },
-    ));
+    await add(
+      KeyboardListenerComponent(
+        keyDown: {
+          LogicalKeyboardKey.space: onSpace,
+        },
+      ),
+    );
 
     return super.onLoad();
   }
@@ -37,16 +39,18 @@ class DirectionalController extends Component
 
   @override
   Future<void> onLoad() async {
-    await add(KeyboardListenerComponent(
-      keyDown: {
-        LogicalKeyboardKey.arrowLeft: onLeftStart,
-        LogicalKeyboardKey.arrowRight: onRightStart,
-      },
-      keyUp: {
-        LogicalKeyboardKey.arrowLeft: onLeftEnd,
-        LogicalKeyboardKey.arrowRight: onRightEnd,
-      },
-    ));
+    await add(
+      KeyboardListenerComponent(
+        keyDown: {
+          LogicalKeyboardKey.arrowLeft: onLeftStart,
+          LogicalKeyboardKey.arrowRight: onRightStart,
+        },
+        keyUp: {
+          LogicalKeyboardKey.arrowLeft: onLeftEnd,
+          LogicalKeyboardKey.arrowRight: onRightEnd,
+        },
+      ),
+    );
 
     return super.onLoad();
   }

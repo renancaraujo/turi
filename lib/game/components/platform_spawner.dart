@@ -33,7 +33,7 @@ class PlatformSpawner extends Component
 
     final size = Vector2(width, kPlatformHeight);
 
-    await game.world.flameMultiBlocProvider.add(
+    await game.world.platformsContainer.add(
       Platform(
         position: Vector2(x, -y),
         size: size,
@@ -46,9 +46,9 @@ class PlatformSpawner extends Component
     currentMinY += interval;
   }
 
-  void preloadPlatforms() async {
+  Future<void> preloadPlatforms() async {
     needsPreloadCheck = false;
-    int count = 0;
+    var count = 0;
     while (distanceToCameraTop < kPlatformPreloadArea && count < 10) {
       await spawnPlatform();
       count++;
@@ -56,10 +56,9 @@ class PlatformSpawner extends Component
     needsPreloadCheck = true;
   }
 
-  void spawnIntitialPlatforms() async {
-    print("spwn init");
-    await Future<void>.delayed(Duration(milliseconds: 1200));
-    int count = 0;
+  Future<void> spawnIntitialPlatforms() async {
+    await Future<void>.delayed(const Duration(milliseconds: 1200));
+    var count = 0;
     while (distanceToCameraTop < kPlatformPreloadArea && count < 10) {
       final delayed = Future<void>.delayed(
         Duration(

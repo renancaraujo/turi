@@ -4,6 +4,7 @@ import 'package:crystal_ball/game/game.dart';
 import 'package:flame/game.dart' hide Route;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_shaders/flutter_shaders.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -22,7 +23,14 @@ class GamePage extends StatelessWidget {
           providers: [
             BlocProvider<GameCubit>(create: (_) => GameCubit()),
           ],
-          child: const GameView(),
+          child: ShaderBuilder(
+            assetKey: 'shaders/platforms.glsl',
+            (context, platformsShader, _) {
+              return GameView(
+                platformsShader: platformsShader,
+              );
+            },
+          ),
         ),
       ),
     );
@@ -30,9 +38,14 @@ class GamePage extends StatelessWidget {
 }
 
 class GameView extends StatefulWidget {
-  const GameView({super.key, this.game});
+  const GameView({
+    required this.platformsShader,
+    super.key,
+    this.game,
+  });
 
   final FlameGame? game;
+  final FragmentShader platformsShader;
 
   @override
   State<GameView> createState() => _GameViewState();
@@ -56,7 +69,10 @@ class _GameViewState extends State<GameView> {
           gameCubit: gameCubit,
           textStyle: textStyle,
           random: random,
+          platformsShader: widget.platformsShader,
+          pixelRatio: MediaQuery.of(context).devicePixelRatio,
         );
+
     return GameWidget(
       game: _game!,
     );

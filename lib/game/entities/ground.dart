@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:crystal_ball/game/constants.dart';
+import 'package:crystal_ball/game/game.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
@@ -13,8 +13,12 @@ class Ground extends Component {
         );
 
   @override
-  // TODO: implement debugMode
-  bool get debugMode => true;
+  void renderTree(Canvas canvas) {
+    if (canvas is SamplerCanvas) {
+      return;
+    }
+    super.renderTree(canvas);
+  }
 }
 
 class _Rectangle extends RectangleComponent

@@ -26,7 +26,7 @@ class TheBall extends PositionComponent
           ],
         );
 
-  Vector2 _velocity = Vector2.zero();
+  final Vector2 _velocity = Vector2.zero();
 
   final double _gravity = kGravity;
 
@@ -66,7 +66,9 @@ class TheBall extends PositionComponent
 
   @override
   void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
     super.onCollisionStart(intersectionPoints, other);
     if (!bloc.isPlaying) return;
     if (other is Ground || other is ParentIsA<Ground>) {
@@ -100,44 +102,3 @@ class _Circle extends CircleComponent {
           paint: Paint()..color = const Color(0xFFFFFFFF),
         );
 }
-
-// class _CameraSpot extends PositionComponent
-//     with HasGameRef<CrystalBallGame>, ParentIsA<TheBall> {
-//   _CameraSpot()
-//       : super(
-//           anchor: Anchor.center,
-//         );
-//
-//   final timerInitial = 0.1;
-//
-//   GameCubit get gameCubit => parent.bloc;
-//
-//   late double timer = timerInitial;
-//
-//   @override
-//   void update(double dt) {
-//     if (!gameCubit.isPlaying) {
-//       return;
-//     }
-//
-//     if (timer <= 0) {
-//       final distance = (absolutePosition.y - game.world.cameraTarget.position.y);
-//
-//       if(distance > 0) return;
-//
-//       print('distance $distance');
-//
-//       final factor = smoothStep(0, 1, distance.abs() / 400);
-//
-//       final duration = 3 - factor * 2.8;
-//
-//       game.world.cameraTarget.go(
-//         to: Vector2(0, absolutePosition.y),
-//         duration: duration,
-//         curve: Curves.easeInCirc,
-//       );
-//       timer = timerInitial;
-//     }
-//     timer -= dt;
-//   }
-// }

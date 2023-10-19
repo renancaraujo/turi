@@ -29,7 +29,7 @@ enum PlatformColor {
       (previousValue, element) => previousValue + element.rarity,
     );
     final randomValue = random.nextInt(totalRarity);
-    int currentRarity = 0;
+    var currentRarity = 0;
     for (final color in values) {
       currentRarity += color.rarity;
       if (randomValue < currentRarity) {
@@ -63,10 +63,11 @@ class Platform extends PositionComponent
   }
 
   @override
+  // ignore: overridden_fields
   late final Paint paint = color.paint;
 
   late final effectController = EffectController(
-    duration: kPlatformSpawnDuration.toDouble(),
+    duration: kPlatformSpawnDuration,
   );
 
   final PlatformColor color;
