@@ -14,6 +14,10 @@ class GameCubit extends Cubit<GameState> {
   }
 
   void startGame() {
+    setState(GameState.starting);
+  }
+
+  void gameStarted() {
     setState(GameState.playing);
   }
 
@@ -24,7 +28,7 @@ class GameCubit extends Cubit<GameState> {
 
 enum GameState {
   initial,
+  starting,
   playing,
-  // paused,
   gameOver,
 }

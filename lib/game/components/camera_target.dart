@@ -1,4 +1,3 @@
-import 'package:crystal_ball/game/constants.dart';
 import 'package:crystal_ball/game/crystal_ball.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -7,13 +6,13 @@ import 'package:flutter/animation.dart';
 class CameraTarget extends PositionComponent with HasGameRef<CrystalBallGame> {
   CameraTarget()
       : super(
-          position: Vector2(0.0, -kCameraSize.height / 4),
-          size: Vector2.all(1),
+          position: Vector2(0, 0),
+          size: Vector2.all(0),
           anchor: Anchor.center,
           priority: 0x7fffffff,
         );
 
-  final effectController = CurvedEffectController(
+  final effectController = GoodCurvedEffectController(
     0.1,
     Curves.easeInOut,
   )..setToEnd();
@@ -21,20 +20,28 @@ class CameraTarget extends PositionComponent with HasGameRef<CrystalBallGame> {
   late final moveEffect = MoveCameraTarget(position, effectController);
 
   @override
-  Color get debugColor => const Color(0xFFFFFF00);
-
-  @override
-  bool get debugMode => true;
-
-  @override
   Future<void> onLoad() async {
     await add(moveEffect);
   }
 
-  void go({required Vector2 to, bool calm = false}) {
-    effectController.duration = calm ? 10 : 0.5;
+  void go({
+    required Vector2 to,
+    Curve curve = Curves.easeInOut,
+    double duration = 0.25,
+    double scale = 1,
+  }) {
+    effectController
+      ..duration = duration * 4
+      ..curve = curve;
 
     moveEffect.go(to: to);
+    // add(ScaleEffect.to(Vector2.all(scale), effectController));
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    game.camera.viewfinder.zoom = scale.x;
   }
 }
 
@@ -65,4 +72,14 @@ class MoveCameraTarget extends Effect with EffectTarget<CameraTarget> {
     _to = to;
     _from = target.position;
   }
+}
+
+class GoodCurvedEffectController extends DurationEffectController {
+  GoodCurvedEffectController(super.duration, this.curve)
+      : assert(duration > 0, 'Duration must be positive: $duration');
+
+  Curve curve;
+
+  @override
+  double get progress => curve.transform(timer / duration);
 }
