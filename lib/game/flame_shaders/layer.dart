@@ -1,12 +1,12 @@
 import 'dart:ui';
 
-import 'package:flame/components.dart';
 import 'package:flutter/foundation.dart';
 
 typedef CanvasCreator = Canvas Function(PictureRecorder recorder);
 
 typedef FlameSampler = void Function(
   Image image,
+  Size size,
   Canvas canvas,
 );
 
@@ -26,7 +26,7 @@ class FragmentShaderLayer {
   late Picture _preRenderedPicture;
   final double pixelRatio;
 
-  void render(Canvas canvas, Vector2 size) {
+  void render(Canvas canvas, Size size) {
     final recorder = PictureRecorder();
 
     final innerCanvas = canvasCreator(recorder);
@@ -35,9 +35,10 @@ class FragmentShaderLayer {
 
     sampler(
       _preRenderedPicture.toImageSync(
-        (pixelRatio * size.x).ceil(),
-        (pixelRatio * size.y).ceil(),
+        (pixelRatio * size.width).ceil(),
+        (pixelRatio * size.height).ceil(),
       ),
+      size,
       canvas,
     );
   }

@@ -67,7 +67,7 @@ class SamplerCamera<OwnerType extends SamplerOwner> extends CameraComponent {
 
   @override
   void renderTree(Canvas canvas) {
-    layer.render(canvas, viewport.size);
+    layer.render(canvas, viewport.size.toSize());
   }
 }
 

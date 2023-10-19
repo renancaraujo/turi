@@ -8,48 +8,6 @@ import 'package:flame/input.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/painting.dart';
 
-class CrystalWorld extends World {
-  CrystalWorld({
-    // ignore: strict_raw_type
-    required List<FlameBlocProvider> providers,
-    required this.random,
-    super.priority = -0x7fffffff,
-  }) {
-    flameMultiBlocProvider = FlameMultiBlocProvider(
-      providers: providers,
-      children: [
-        Wall(),
-        PlatformSpawner(random: random),
-        GameStateController(),
-        KeyboardHandlerSync(),
-        directionalController = DirectionalController(),
-        theBall = TheBall(position: Vector2.zero()),
-        Ground(),
-        reaper = Reaper(),
-        platformsContainer = RenderOnlyOnSamplerCanvas<PlatformsSamplerOwner>(),
-      ],
-    );
-
-    add(flameMultiBlocProvider);
-
-    add(cameraTarget);
-  }
-
-  late final FlameMultiBlocProvider flameMultiBlocProvider;
-
-  late final cameraTarget = CameraTarget();
-
-  late final DirectionalController directionalController;
-
-  late final Reaper reaper;
-
-  late final TheBall theBall;
-
-  late final RenderOnlyOnSamplerCanvas platformsContainer;
-
-  final Random random;
-}
-
 class CrystalBallGame extends FlameGame<CrystalWorld>
     with HasKeyboardHandlerComponents, HasCollisionDetection {
   CrystalBallGame({
@@ -59,8 +17,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     required this.platformsShader,
     required this.pixelRatio,
   }) : super(
-          camera: SamplerCamera.withFixedResolution(
-            samplerOwner: PlatformsSamplerOwner(platformsShader),
+          camera: CameraComponent.withFixedResolution(
             width: kCameraSize.width,
             height: kCameraSize.height,
             backdrop: RectangleComponent(
@@ -68,7 +25,6 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
               size: kCameraSize.asVector2,
               priority: -0x7ffffffF,
             ),
-            pixelRatio: pixelRatio,
           ),
           world: CrystalWorld(
             random: random,
@@ -81,6 +37,21 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
         ) {
     camera.follow(world.cameraTarget);
     images.prefix = '';
+
+    add(
+      SamplerCamera.withFixedResolution(
+        world: camera.world,
+        width: kCameraSize.width,
+        height: kCameraSize.height,
+        pixelRatio: pixelRatio,
+        samplerOwner: PlatformsSamplerOwner(platformsShader),
+        backdrop: RectangleComponent(
+          paint: Paint()..color = const Color(0xFF000000),
+          size: kCameraSize.asVector2,
+          priority: -0x7ffffffF,
+        ),
+      )..follow(world.cameraTarget),
+    );
   }
 
   final TextStyle textStyle;
@@ -93,7 +64,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
   int counter = 0;
 
   @override
-  Color backgroundColor() => const Color(0xFF000000);
+  Color backgroundColor() => const Color(0xFF00FF00);
 
   @override
   Future<void> onLoad() async {}

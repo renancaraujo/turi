@@ -5,7 +5,8 @@ abstract class SamplerOwner {
   SamplerOwner(this.shader);
 
   final FragmentShader shader;
-  void sampler(Image image, Canvas canvas);
+
+  void sampler(Image image, Size size, Canvas canvas);
 }
 
 class SamplerCanvas<O extends SamplerOwner> implements Canvas {

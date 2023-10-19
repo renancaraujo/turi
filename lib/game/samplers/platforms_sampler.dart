@@ -1,17 +1,22 @@
 import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
+import 'package:flutter_shaders/flutter_shaders.dart';
 
 class PlatformsSamplerOwner extends SamplerOwner {
   PlatformsSamplerOwner(super.shader);
 
   @override
-  void sampler(Image image, Canvas canvas) {
-    canvas.drawImage(
-      image,
-      // Offset(-450, -800),
-      Offset.zero,
-      Paint()..color = const Color(0x5500FF00),
-    );
+  void sampler(Image image, Size size, Canvas canvas) {
+    shader
+      ..setFloatUniforms((value) {
+        value.setSize(size);
+      })
+      ..setImageSampler(0, image);
+
+    canvas
+      ..save()
+      ..drawRect(Offset.zero & size, Paint()..shader = shader)
+      ..restore();
   }
 }

@@ -6,3 +6,4 @@ export 'entities/entities.dart';
 export 'flame_shaders/flame_shaders.dart';
 export 'samplers/samplers.dart';
 export 'view/view.dart';
+export 'world.dart';
