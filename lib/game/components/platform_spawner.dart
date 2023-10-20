@@ -20,11 +20,10 @@ class PlatformSpawner extends Component
 
   Future<Platform> spawnPlatform({bool advance = true, double? avoidX}) async {
     final y = currentMinY;
-    final padedHalfWidth = (kCameraSize.width - 100) / 2;
+    final padedHalfWidth = (kCameraSize.width - 400) / 2;
 
     late final double x;
     if (avoidX != null) {
-      print(avoidX);
       if (avoidX < 0) {
         x = random.nextDoubleInBetween(0, padedHalfWidth);
       } else {
@@ -64,7 +63,7 @@ class PlatformSpawner extends Component
     needsPreloadCheck = false;
     var count = 0;
     while (distanceToCameraTop < kPlatformPreloadArea && count < 10) {
-      final spawnTwo = random.nextInt(12) == 0;
+      final spawnTwo = random.nextInt(30) == 0;
       if (spawnTwo) {
         final plat = await spawnPlatform(advance: false);
         await spawnPlatform(avoidX: plat.position.x);

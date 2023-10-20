@@ -23,12 +23,11 @@ class Ground extends Component {
   }
 }
 
-class _Rectangle extends RectangleComponent
+class _Rectangle extends PositionComponent
     with CollisionCallbacks, ParentIsA<Ground> {
   _Rectangle()
       : super(
           anchor: Anchor.topCenter,
-          paint: Paint()..color = const Color(0xFF1F1616),
           position: Vector2(0, kPlayerSize.height / 2),
           size: Vector2(
             kCameraSize.width,

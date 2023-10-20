@@ -47,6 +47,7 @@ class CrystalWorld extends World {
 
   final Random random;
 
+  @override
   Future<void> onLoad() async {
     await super.onLoad();
 
@@ -57,9 +58,4 @@ class CrystalWorld extends World {
     return children.query<Platform>();
   }
 
-  @override
-  void update(double dt) {
-    // TODO: implement update
-    super.update(dt);
-  }
 }

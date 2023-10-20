@@ -1,7 +1,6 @@
 import 'package:crystal_ball/game/game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 
 class KeyboardHandlerSync extends PositionComponent

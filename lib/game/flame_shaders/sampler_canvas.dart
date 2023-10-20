@@ -12,6 +12,7 @@ abstract class SamplerOwner {
 
   CameraComponent? cameraComponent;
 
+  // ignore: use_setters_to_change_properties
   void attachCamera(CameraComponent cameraComponent) {
     this.cameraComponent = cameraComponent;
   }

@@ -23,7 +23,7 @@ enum PlatformColor {
   ),
   red._(
     rarity: 44,
-    gradient: [Color(0xFFF70000), Color(0xFFFF506D)],
+    gradient: [Color(0xFFFF3403), Color(0xFFFD2B9B)],
   ),
   purple._(
     rarity: 25,
@@ -150,7 +150,7 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
       _glowTo(
         to: _getGlowGama(),
       );
-      timer = 0.2;
+      timer = 0.4;
     }
 
     if (y > game.world.reaper.y) {
@@ -159,7 +159,7 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
   }
 
   double _getGlowGama() {
-    return mix(1, 7, smoothStep(0, 1, pow(_distanceToBall, 2).toDouble()));
+    return mix(1, 4, smoothStep(0, 1, pow(_distanceToBall, 2).toDouble()));
   }
 
   @override

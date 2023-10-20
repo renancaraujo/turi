@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   audioplayers: ^5.2.0
+  binarize: ^1.5.0
   bloc: ^8.1.2
   equatable: ^2.0.5
   flame: 1.10.0
@@ -39,3 +40,4 @@ flutter:
   shaders:
     - shaders/platforms.glsl
     - shaders/the_ball.glsl
+    - shaders/mesh_25_gradient.glsl

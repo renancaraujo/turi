@@ -87,7 +87,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
   int counter = 0;
 
   @override
-  Color backgroundColor() => const Color(0xFF000000);
+  Color backgroundColor() => const Color(0x00000000);
 
   @override
   Future<void> onLoad() async {}

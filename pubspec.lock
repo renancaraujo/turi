@@ -89,6 +89,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  binarize:
+    dependency: "direct main"
+    description:
+      name: binarize
+      sha256: be99c79b4004137aa979bc52ff76a9a1062f481cea2fb7c989f712e233c6bb1a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
   bloc:
     dependency: "direct main"
     description:

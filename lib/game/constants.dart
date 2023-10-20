@@ -13,14 +13,14 @@ const double kPlatformVerticalInterval = 1;
 const double kStartPlatformHeight = 400;
 const double kMeanPlatformInterval = 370;
 const double kPlatformIntervalVariation = 100;
-const double kPlatformMinWidth = 120;
-const double kPlatformWidthVariation = 100;
+const double kPlatformMinWidth = 60;
+const double kPlatformWidthVariation = 160;
 const double kPlatformHeight = 10;
 const double kPlatformPreloadArea = 1600;
 
 const double kGravity = 100;
 const double kJumpVelocity = 3000;
-const double kPlatforGlowDistance = 1000.0;
+const double kPlatforGlowDistance = 1000;
 
 const double kReaperTolerance = 800;
 

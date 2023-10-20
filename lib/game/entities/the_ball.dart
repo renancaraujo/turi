@@ -31,6 +31,7 @@ class TheBall extends PositionComponent
 
   late double gama = 0.1;
 
+  @override
   Future<void> onLoad() async {
     await super.onLoad();
     await add(glowEffect);
@@ -40,7 +41,7 @@ class TheBall extends PositionComponent
     0.4,
     Curves.easeInOut,
   )..setToEnd();
-  late final glowEffect = _PlatformGamaEffect(0.2, effectController);
+  late final glowEffect = _PlatformGamaEffect(0.1, effectController);
 
   void jump() {
     velocity.y = -kJumpVelocity;
@@ -52,16 +53,16 @@ class TheBall extends PositionComponent
     switch (state) {
       case GameState.initial:
         position = Vector2.zero();
-        _glowTo(to: 0.2, duration: 1);
+        _glowTo(to: 0.1, duration: 0.1);
       case GameState.starting:
         position = Vector2.zero();
-        _glowTo(to: 1, duration: 1);
+        _glowTo(to: 1, duration: kOpeningDuration);
         jump();
       case GameState.playing:
         break;
       case GameState.gameOver:
         position = Vector2.zero();
-        _glowTo(to: 0.2, duration: 1);
+        _glowTo(to: 0.1, duration: 1);
     }
   }
 
@@ -130,7 +131,7 @@ class TheBall extends PositionComponent
     double duration = 0.1,
   }) {
     effectController
-      ..duration = kOpeningDuration
+      ..duration = duration
       ..curve = curve;
 
     glowEffect._change(to: to);

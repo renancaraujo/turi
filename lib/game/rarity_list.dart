@@ -20,7 +20,8 @@ class RarityList<T> {
       : _rarities = rarities..sort((a, b) => a.weight < b.weight ? 1 : -1),
         assert(
           rarities.fold<int>(0, _raritySum) == 1000,
-          'The sum of the rarities weight has to equal 1000: ${rarities.fold<int>(0, _raritySum)}',
+          '''
+The sum of the rarities weight has to equal 1000: ${rarities.fold<int>(0, _raritySum)}''',
         ) {
     _probabilities = _rarities.map((rare) {
       final filler = 1000 - _rarities.fold<int>(0, _raritySum);
