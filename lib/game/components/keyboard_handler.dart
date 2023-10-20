@@ -1,11 +1,16 @@
 import 'package:crystal_ball/game/game.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 
-class KeyboardHandlerSync extends Component
-    with FlameBlocReader<GameCubit, GameState> {
-  KeyboardHandlerSync();
+class KeyboardHandlerSync extends PositionComponent
+    with TapCallbacks, HasGameRef<CrystalBallGame> {
+  KeyboardHandlerSync()
+      : super(
+          anchor: Anchor.center,
+          size: kCameraSize.asVector2,
+        );
 
   @override
   Future<void> onLoad() async {
@@ -17,28 +22,6 @@ class KeyboardHandlerSync extends Component
       ),
     );
 
-    return super.onLoad();
-  }
-
-  bool onSpace(Set<LogicalKeyboardKey> logicalKeys) {
-    if (bloc.state == GameState.initial) {
-      bloc.startGame();
-      return false;
-    }
-    return true;
-  }
-}
-
-class DirectionalController extends Component
-    with FlameBlocReader<GameCubit, GameState> {
-  DirectionalController();
-
-  double _directionalCoefficient = 0;
-
-  double get directionalCoefficient => _directionalCoefficient;
-
-  @override
-  Future<void> onLoad() async {
     await add(
       KeyboardListenerComponent(
         keyDown: {
@@ -55,20 +38,63 @@ class DirectionalController extends Component
     return super.onLoad();
   }
 
+  @override
+  void update(double dt) {
+    super.update(dt);
+    position = game.world.cameraTarget.position;
+  }
+
+  bool onSpace(Set<LogicalKeyboardKey> logicalKeys) {
+    if (game.gameCubit.state == GameState.initial) {
+      game.gameCubit.startGame();
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  void onTapDown(TapDownEvent event) {
+    super.onTapDown(event);
+
+    if (event.devicePosition.x < game.size.x / 2) {
+      onLeftStart({});
+    } else {
+      onRightStart({});
+    }
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    super.onTapUp(event);
+    if (game.gameCubit.state == GameState.initial) {
+      game.gameCubit.startGame();
+    }
+    if (!game.gameCubit.isPlaying) return;
+    if (event.devicePosition.x < game.size.x / 2) {
+      onLeftEnd({});
+    } else {
+      onRightEnd({});
+    }
+  }
+
+  double _directionalCoefficient = 0;
+
+  double get directionalCoefficient => _directionalCoefficient;
+
   bool onLeftStart(Set<LogicalKeyboardKey> logicalKeys) {
-    if (!bloc.isPlaying) return true;
+    if (!game.gameCubit.isPlaying) return true;
     _directionalCoefficient = -1;
     return false;
   }
 
   bool onRightStart(Set<LogicalKeyboardKey> logicalKeys) {
-    if (!bloc.isPlaying) return true;
+    if (!game.gameCubit.isPlaying) return true;
     _directionalCoefficient = 1;
     return false;
   }
 
   bool onLeftEnd(Set<LogicalKeyboardKey> logicalKeys) {
-    if (!bloc.isPlaying) return true;
+    if (!game.gameCubit.isPlaying) return true;
     if (_directionalCoefficient < 0) {
       _directionalCoefficient = 0;
     }
@@ -76,7 +102,7 @@ class DirectionalController extends Component
   }
 
   bool onRightEnd(Set<LogicalKeyboardKey> logicalKeys) {
-    if (!bloc.isPlaying) return true;
+    if (!game.gameCubit.isPlaying) return true;
     if (_directionalCoefficient > 0) {
       _directionalCoefficient = 0;
     }

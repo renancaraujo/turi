@@ -24,12 +24,14 @@ class GamePage extends StatelessWidget {
             BlocProvider<GameCubit>(create: (_) => GameCubit()),
           ],
           child: ShaderBuilder(
-            assetKey: 'shaders/platforms.glsl',
-            (context, platformsShader, _) {
-              return GameView(
+            assetKey: 'shaders/the_ball.glsl',
+            (context, theBallShader, _) => ShaderBuilder(
+              assetKey: 'shaders/platforms.glsl',
+              (context, platformsShader, _) => GameView(
                 platformsShader: platformsShader,
-              );
-            },
+                theBallShader: theBallShader,
+              ),
+            ),
           ),
         ),
       ),
@@ -40,12 +42,14 @@ class GamePage extends StatelessWidget {
 class GameView extends StatefulWidget {
   const GameView({
     required this.platformsShader,
+    required this.theBallShader,
     super.key,
     this.game,
   });
 
   final FlameGame? game;
   final FragmentShader platformsShader;
+  final FragmentShader theBallShader;
 
   @override
   State<GameView> createState() => _GameViewState();
@@ -70,6 +74,7 @@ class _GameViewState extends State<GameView> {
           textStyle: textStyle,
           random: random,
           platformsShader: widget.platformsShader,
+          theBallShader: widget.theBallShader,
           pixelRatio: MediaQuery.of(context).devicePixelRatio,
         );
 

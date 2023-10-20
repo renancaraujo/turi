@@ -16,6 +16,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     required this.random,
     required this.gameCubit,
     required this.platformsShader,
+    required this.theBallShader,
     required this.pixelRatio,
   }) : super(
           world: CrystalWorld(
@@ -32,6 +33,11 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 
     addCamera(classicCamera);
     addCamera(platformGlowCamera);
+    addCamera(theBallGlowCamera);
+
+    world.addAll([
+      directionalController = KeyboardHandlerSync(),
+    ]);
   }
 
   final TextStyle textStyle;
@@ -39,24 +45,23 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
   final GameCubit gameCubit;
   final double pixelRatio;
 
+  late final KeyboardHandlerSync directionalController;
+
   final FragmentShader platformsShader;
+  final FragmentShader theBallShader;
 
   FutureOr<void> addCamera(CameraComponent component) {
     return add(component..follow(world.cameraTarget));
   }
 
+  // cameras
+
   late final classicCamera = CameraComponent.withFixedResolution(
     width: kCameraSize.width,
     height: kCameraSize.height,
     world: camera.world,
-    backdrop: RectangleComponent(
-      paint: Paint()..color = const Color(0xFF000000),
-      size: kCameraSize.asVector2,
-      priority: -0x7ffffffF,
-    ),
   );
 
-  // cameras
   late final platformGlowCamera = SamplerCamera.withFixedResolution(
     samplerOwner: PlatformsSamplerOwner(
       platformsShader,
@@ -66,17 +71,23 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     width: kCameraSize.width,
     height: kCameraSize.height,
     pixelRatio: pixelRatio,
-    backdrop: RectangleComponent(
-      paint: Paint()..color = const Color(0xFF000000),
-      size: kCameraSize.asVector2,
-      priority: -0x7ffffffF,
+  );
+
+  late final theBallGlowCamera = SamplerCamera.withFixedResolution(
+    samplerOwner: TheBallSamplerOwner(
+      theBallShader,
+      world,
     ),
+    world: camera.world,
+    width: kCameraSize.width,
+    height: kCameraSize.height,
+    pixelRatio: pixelRatio,
   );
 
   int counter = 0;
 
   @override
-  Color backgroundColor() => const Color(0xFF474747);
+  Color backgroundColor() => const Color(0xFF000000);
 
   @override
   Future<void> onLoad() async {}

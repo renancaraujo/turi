@@ -17,8 +17,6 @@ class CrystalWorld extends World {
       children: [
         PlatformSpawner(random: random),
         GameStateController(),
-        KeyboardHandlerSync(),
-        directionalController = DirectionalController(),
         reaper = Reaper(),
         theBall = TheBall(position: Vector2.zero()),
         Ground(),
@@ -42,8 +40,6 @@ class CrystalWorld extends World {
   late final FlameMultiBlocProvider flameMultiBlocProvider;
 
   late final cameraTarget = CameraTarget();
-
-  late final DirectionalController directionalController;
 
   late final Reaper reaper;
 

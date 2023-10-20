@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:crystal_ball/game/game.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/animation.dart';
 
@@ -17,21 +18,32 @@ class TheBall extends PositionComponent
           anchor: Anchor.center,
           priority: 100000,
           children: [
-            _Circle(radius: kPlayerRadius),
             CircleHitbox(
               radius: kPlayerRadius,
               anchor: Anchor.center,
             ),
-            // _CameraSpot(),
           ],
         );
 
-  final Vector2 _velocity = Vector2.zero();
+  final Vector2 velocity = Vector2.zero();
 
   final double _gravity = kGravity;
 
+  late double gama = 0.1;
+
+  Future<void> onLoad() async {
+    await super.onLoad();
+    await add(glowEffect);
+  }
+
+  final effectController = GoodCurvedEffectController(
+    0.4,
+    Curves.easeInOut,
+  )..setToEnd();
+  late final glowEffect = _PlatformGamaEffect(0.2, effectController);
+
   void jump() {
-    _velocity.y = -kJumpVelocity;
+    velocity.y = -kJumpVelocity;
   }
 
   @override
@@ -39,28 +51,37 @@ class TheBall extends PositionComponent
     super.onNewState(state);
     switch (state) {
       case GameState.initial:
+        position = Vector2.zero();
+        _glowTo(to: 0.2, duration: 1);
       case GameState.starting:
         position = Vector2.zero();
+        _glowTo(to: 1, duration: 1);
         jump();
       case GameState.playing:
+        break;
       case GameState.gameOver:
-      // todo: figure out
+        position = Vector2.zero();
+        _glowTo(to: 0.2, duration: 1);
     }
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    if (!bloc.isPlaying) return;
+    if (!bloc.isPlaying) {
+      velocity
+        ..y = 0
+        ..x = 0;
+      return;
+    }
 
-    _velocity.y += _gravity;
-    final horzV = _velocity.y.abs() * 0.5;
-    _velocity.x =
-        game.world.directionalController.directionalCoefficient * horzV;
+    velocity.y += _gravity;
+    final horzV = velocity.y.abs() * 0.5;
+    velocity.x = game.directionalController.directionalCoefficient * horzV;
 
     final maxH = kCameraSize.width / 2 - kPlayerRadius;
 
-    position += _velocity * dt;
+    position += velocity * dt;
     position.x = clampDouble(x, -maxH, maxH);
   }
 
@@ -72,12 +93,12 @@ class TheBall extends PositionComponent
     super.onCollisionStart(intersectionPoints, other);
     if (!bloc.isPlaying) return;
     if (other is Ground || other is ParentIsA<Ground>) {
-      _velocity.y = 0;
+      velocity.y = 0;
       position.y = 0;
       jump();
     }
-    if (other is Platform && _velocity.y > 0) {
-      _velocity.y = 0;
+    if (other is Platform && velocity.y > 0) {
+      velocity.y = 0;
       position.y = other.topLeftPosition.y - kPlayerRadius;
       jump();
       game.world.cameraTarget.go(
@@ -87,9 +108,9 @@ class TheBall extends PositionComponent
       );
     }
 
-    if (other is Reaper && _velocity.y > 0) {
+    if (other is Reaper && velocity.y > 0) {
       bloc.gameOver();
-      _velocity.y = 0;
+      velocity.y = 0;
     }
   }
 
@@ -102,13 +123,46 @@ class TheBall extends PositionComponent
     }
     super.renderTree(canvas);
   }
+
+  void _glowTo({
+    required double to,
+    Curve curve = Curves.easeInOut,
+    double duration = 0.1,
+  }) {
+    effectController
+      ..duration = kOpeningDuration
+      ..curve = curve;
+
+    glowEffect._change(to: to);
+  }
 }
 
-class _Circle extends CircleComponent {
-  _Circle({
-    required double super.radius,
-  }) : super(
-          anchor: Anchor.center,
-          paint: Paint()..color = const Color(0xFFFFFFFF),
-        );
+class _PlatformGamaEffect extends Effect with EffectTarget<TheBall> {
+  _PlatformGamaEffect(this._to, super.controller);
+
+  @override
+  void onMount() {
+    super.onMount();
+    _from = target.gama;
+  }
+
+  double _to;
+  late double _from;
+
+  @override
+  bool get removeOnFinish => false;
+
+  @override
+  void apply(double progress) {
+    final delta = _to - _from;
+    final position = _from + delta * progress;
+    target.gama = position;
+  }
+
+  void _change({required double to}) {
+    reset();
+
+    _to = to;
+    _from = target.gama;
+  }
 }

@@ -38,3 +38,4 @@ flutter:
     - assets/licenses/poppins/
   shaders:
     - shaders/platforms.glsl
+    - shaders/the_ball.glsl

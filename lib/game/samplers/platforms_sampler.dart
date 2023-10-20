@@ -16,6 +16,9 @@ class PlatformsSamplerOwner extends SamplerOwner {
   late List<Platform> _platforms;
 
   @override
+  int get passes => 0;
+
+  @override
   void update(double dt) {
     super.update(dt);
 

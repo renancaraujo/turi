@@ -71,7 +71,12 @@ class SamplerCamera<OwnerType extends SamplerOwner> extends CameraComponent {
 
   @override
   void renderTree(Canvas canvas) {
+    final offset = viewport.position;
+    canvas
+      ..save()
+      ..translate(offset.x, offset.y);
     layer.render(canvas, viewport.size.toSize());
+    canvas.restore();
   }
 
   @override

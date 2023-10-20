@@ -64,8 +64,12 @@ vec4 processPlatform(vec2 uv, vec2 a, vec2 b, vec3 colorL, vec3 colorR, float gl
     }
 
 
-    float light = acos(dot(normalize(a - uv), normalize(b - uv))) / (PI );
+    float light = acos(dot(normalize(a - uv), normalize(b - uv))) / (PI * 0.979 );
+    light = clamp(light, 0.0, 1.0);
+    gama = clamp(gama, 0.0, 100.0);
+
     vec3 col = pow(light, gama) * gradient;
+
     float alpha = pow(light, gama) ;
 
     return vec4(col, alpha);
