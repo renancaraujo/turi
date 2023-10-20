@@ -92,6 +92,16 @@ class TheBall extends PositionComponent
       _velocity.y = 0;
     }
   }
+
+  @override
+  void renderTree(Canvas canvas) {
+    if (canvas is SamplerCanvas) {
+      if (canvas.owner is PlatformsSamplerOwner) {
+        return;
+      }
+    }
+    super.renderTree(canvas);
+  }
 }
 
 class _Circle extends CircleComponent {

@@ -18,39 +18,60 @@ class PlatformSpawner extends Component
 
   bool needsPreloadCheck = false;
 
-  @override
-  void onLoad() {}
-
-  Future<void> spawnPlatform() async {
+  Future<Platform> spawnPlatform({bool advance = true, double? avoidX}) async {
     final y = currentMinY;
     final padedHalfWidth = (kCameraSize.width - 100) / 2;
-    final x = random.nextDoubleInBetween(-padedHalfWidth, padedHalfWidth);
 
-    final color = PlatformColor.random(random);
+    late final double x;
+    if (avoidX != null) {
+      print(avoidX);
+      if (avoidX < 0) {
+        x = random.nextDoubleInBetween(0, padedHalfWidth);
+      } else {
+        x = random.nextDoubleInBetween(-padedHalfWidth, 0);
+      }
+    } else {
+      x = random.nextDoubleInBetween(-padedHalfWidth, padedHalfWidth);
+    }
+
+    final color = PlatformColor.rarityRandom(random);
 
     final width = kPlatformMinWidth +
         random.nextDoubleAntiSmooth() * kPlatformWidthVariation;
 
     final size = Vector2(width, kPlatformHeight);
 
-    await game.world.platformsContainer.add(
-      Platform(
-        position: Vector2(x, -y),
-        size: size,
-        color: color,
-      ),
+    final result = Platform(
+      position: Vector2(x, -y),
+      random: random,
+      size: size,
+      color: color,
+    );
+    await game.world.add(
+      result,
     );
 
     final interval = kMeanPlatformInterval +
         random.nextVariation() * kPlatformIntervalVariation;
-    currentMinY += interval;
+    if (advance) {
+      currentMinY += interval;
+    }
+
+    return result;
   }
 
   Future<void> preloadPlatforms() async {
     needsPreloadCheck = false;
     var count = 0;
     while (distanceToCameraTop < kPlatformPreloadArea && count < 10) {
-      await spawnPlatform();
+      final spawnTwo = random.nextInt(12) == 0;
+      if (spawnTwo) {
+        final plat = await spawnPlatform(advance: false);
+        await spawnPlatform(avoidX: plat.position.x);
+      } else {
+        await spawnPlatform();
+      }
+
       count++;
     }
     needsPreloadCheck = true;

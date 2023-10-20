@@ -22,9 +22,12 @@ class SamplerCamera<OwnerType extends SamplerOwner> extends CameraComponent {
       shader: samplerOwner.shader,
       preRender: _preRender,
       canvasCreator: _createCanvas,
+      passes: samplerOwner.passes,
       sampler: samplerOwner.sampler,
       pixelRatio: pixelRatio,
     );
+
+    samplerOwner.attachCamera(this);
   }
 
   factory SamplerCamera.withFixedResolution({
@@ -54,10 +57,11 @@ class SamplerCamera<OwnerType extends SamplerOwner> extends CameraComponent {
 
   final double pixelRatio;
 
-  Canvas _createCanvas(PictureRecorder recorder) {
+  Canvas _createCanvas(PictureRecorder recorder, int pass) {
     return SamplerCanvas(
       owner: samplerOwner,
       actualCanvas: Canvas(recorder),
+      pass: pass,
     );
   }
 
@@ -69,46 +73,10 @@ class SamplerCamera<OwnerType extends SamplerOwner> extends CameraComponent {
   void renderTree(Canvas canvas) {
     layer.render(canvas, viewport.size.toSize());
   }
-}
-
-class RenderOnlyOnSamplerCanvas<OwnerType extends SamplerOwner>
-    extends Component {
-  RenderOnlyOnSamplerCanvas({
-    super.children,
-    super.priority,
-    super.key,
-    this.skipNormalRendering = true,
-  });
-
-  final bool skipNormalRendering;
 
   @override
-  void renderTree(Canvas canvas) {
-    if (canvas is SamplerCanvas) {
-      if (canvas.owner is! OwnerType) {
-        return;
-      }
-    } else if (skipNormalRendering) {
-      return;
-    }
-
-    super.renderTree(canvas);
-  }
-}
-
-class HideForSamplerCanvas<OwnerType extends SamplerOwner> extends Component {
-  HideForSamplerCanvas({
-    super.children,
-    super.priority,
-    super.key,
-  });
-
-  @override
-  void renderTree(Canvas canvas) {
-    if (canvas is SamplerCanvas && canvas.owner is OwnerType) {
-      return;
-    }
-
-    super.renderTree(canvas);
+  void update(double dt) {
+    super.update(dt);
+    samplerOwner.update(dt);
   }
 }

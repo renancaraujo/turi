@@ -15,7 +15,9 @@ class Ground extends Component {
   @override
   void renderTree(Canvas canvas) {
     if (canvas is SamplerCanvas) {
-      return;
+      if (canvas.owner is PlatformsSamplerOwner) {
+        return;
+      }
     }
     super.renderTree(canvas);
   }

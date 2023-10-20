@@ -20,19 +20,23 @@ class CrystalWorld extends World {
         KeyboardHandlerSync(),
         directionalController = DirectionalController(),
         reaper = Reaper(),
-        HideForSamplerCanvas<PlatformsSamplerOwner>(
-          children: [
-            theBall = TheBall(position: Vector2.zero()),
-            Ground(),
-          ],
-        ),
-        platformsContainer = RenderOnlyOnSamplerCanvas<PlatformsSamplerOwner>(),
+        theBall = TheBall(position: Vector2.zero()),
+        Ground(),
       ],
     );
 
     add(flameMultiBlocProvider);
 
     add(cameraTarget);
+
+    // add(
+    //   Platform(
+    //     position: Vector2(0, -400),
+    //     random: random,
+    //     size: Vector2(kPlatformMinWidth + 100, kPlatformHeight),
+    //     color: PlatformColor.orange,
+    //   ),
+    // );
   }
 
   late final FlameMultiBlocProvider flameMultiBlocProvider;
@@ -45,7 +49,21 @@ class CrystalWorld extends World {
 
   late final TheBall theBall;
 
-  late final RenderOnlyOnSamplerCanvas platformsContainer;
-
   final Random random;
+
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    children.register<Platform>();
+  }
+
+  List<Platform> getPlatforms() {
+    return children.query<Platform>();
+  }
+
+  @override
+  void update(double dt) {
+    // TODO: implement update
+    super.update(dt);
+  }
 }

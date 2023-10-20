@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
@@ -17,15 +18,6 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     required this.platformsShader,
     required this.pixelRatio,
   }) : super(
-          camera: CameraComponent.withFixedResolution(
-            width: kCameraSize.width,
-            height: kCameraSize.height,
-            backdrop: RectangleComponent(
-              paint: Paint()..color = const Color(0xFF000000),
-              size: kCameraSize.asVector2,
-              priority: -0x7ffffffF,
-            ),
-          ),
           world: CrystalWorld(
             random: random,
             providers: [
@@ -35,23 +27,11 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
             ],
           ),
         ) {
-    camera.follow(world.cameraTarget);
     images.prefix = '';
+    camera.removeFromParent();
 
-    add(
-      SamplerCamera.withFixedResolution(
-        world: camera.world,
-        width: kCameraSize.width,
-        height: kCameraSize.height,
-        pixelRatio: pixelRatio,
-        samplerOwner: PlatformsSamplerOwner(platformsShader),
-        backdrop: RectangleComponent(
-          paint: Paint()..color = const Color(0xFF000000),
-          size: kCameraSize.asVector2,
-          priority: -0x7ffffffF,
-        ),
-      )..follow(world.cameraTarget),
-    );
+    addCamera(classicCamera);
+    addCamera(platformGlowCamera);
   }
 
   final TextStyle textStyle;
@@ -61,10 +41,42 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 
   final FragmentShader platformsShader;
 
+  FutureOr<void> addCamera(CameraComponent component) {
+    return add(component..follow(world.cameraTarget));
+  }
+
+  late final classicCamera = CameraComponent.withFixedResolution(
+    width: kCameraSize.width,
+    height: kCameraSize.height,
+    world: camera.world,
+    backdrop: RectangleComponent(
+      paint: Paint()..color = const Color(0xFF000000),
+      size: kCameraSize.asVector2,
+      priority: -0x7ffffffF,
+    ),
+  );
+
+  // cameras
+  late final platformGlowCamera = SamplerCamera.withFixedResolution(
+    samplerOwner: PlatformsSamplerOwner(
+      platformsShader,
+      world,
+    ),
+    world: camera.world,
+    width: kCameraSize.width,
+    height: kCameraSize.height,
+    pixelRatio: pixelRatio,
+    backdrop: RectangleComponent(
+      paint: Paint()..color = const Color(0xFF000000),
+      size: kCameraSize.asVector2,
+      priority: -0x7ffffffF,
+    ),
+  );
+
   int counter = 0;
 
   @override
-  Color backgroundColor() => const Color(0xFF00FF00);
+  Color backgroundColor() => const Color(0xFF474747);
 
   @override
   Future<void> onLoad() async {}

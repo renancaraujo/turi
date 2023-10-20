@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 
-typedef CanvasCreator = Canvas Function(PictureRecorder recorder);
+typedef CanvasCreator = Canvas Function(PictureRecorder recorder, int pass);
 
 typedef FlameSampler = void Function(
-  Image image,
+  List<Image> image,
   Size size,
   Canvas canvas,
 );
@@ -17,29 +17,35 @@ class FragmentShaderLayer {
     required this.sampler,
     required this.shader,
     required this.pixelRatio,
+    required this.passes,
   });
 
   final FlameSampler sampler;
   final FragmentShader shader;
   final CanvasCreator canvasCreator;
   final ValueSetter<Canvas> preRender;
-  late Picture _preRenderedPicture;
   final double pixelRatio;
+  final int passes;
 
-  void render(Canvas canvas, Size size) {
+  Image _renderPass(Size size, int pass) {
     final recorder = PictureRecorder();
 
-    final innerCanvas = canvasCreator(recorder);
+    final innerCanvas = canvasCreator(recorder, pass);
     preRender(innerCanvas);
-    _preRenderedPicture = recorder.endRecording();
+    final picture = recorder.endRecording();
 
-    sampler(
-      _preRenderedPicture.toImageSync(
-        (pixelRatio * size.width).ceil(),
-        (pixelRatio * size.height).ceil(),
-      ),
-      size,
-      canvas,
+    return picture.toImageSync(
+      (pixelRatio * size.width).ceil(),
+      (pixelRatio * size.height).ceil(),
     );
+  }
+
+  void render(Canvas canvas, Size size) {
+    final images = <Image>[];
+    for (var i = 0; i < passes; i++) {
+      images.add(_renderPass(size, i));
+    }
+
+    sampler(images, size, canvas);
   }
 }

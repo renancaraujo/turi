@@ -1,22 +1,36 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:flame/components.dart';
+
 abstract class SamplerOwner {
-  SamplerOwner(this.shader);
+  SamplerOwner(this.shader, {this.passes = 1});
 
   final FragmentShader shader;
 
-  void sampler(Image image, Size size, Canvas canvas);
+  final int passes;
+
+  CameraComponent? cameraComponent;
+
+  void attachCamera(CameraComponent cameraComponent) {
+    this.cameraComponent = cameraComponent;
+  }
+
+  void update(double dt) {}
+
+  void sampler(List<Image> images, Size size, Canvas canvas);
 }
 
 class SamplerCanvas<O extends SamplerOwner> implements Canvas {
   SamplerCanvas({
     required this.actualCanvas,
     required this.owner,
+    required this.pass,
   });
 
   final Canvas actualCanvas;
   final O owner;
+  final int pass;
 
   @override
   void clipPath(Path path, {bool doAntiAlias = true}) {

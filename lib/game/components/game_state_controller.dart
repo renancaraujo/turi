@@ -36,9 +36,7 @@ class GameStateController extends Component
           duration: 0.3,
         );
         game.world.theBall.position = Vector2.zero();
-        for (final platform in game.world.flameMultiBlocProvider
-            .descendants()
-            .whereType<Platform>()) {
+        for (final platform in game.world.getPlatforms()) {
           platform.removeFromParent();
         }
         timer = Timer(
