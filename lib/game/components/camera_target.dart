@@ -20,6 +20,12 @@ class CameraTarget extends PositionComponent with HasGameRef<CrystalBallGame> {
   late final moveEffect = MoveCameraTarget(position, effectController);
 
   @override
+  Color get debugColor => const Color(0xFFFFFF00);
+
+  @override
+  bool get debugMode => true;
+
+  @override
   Future<void> onLoad() async {
     await add(moveEffect);
   }

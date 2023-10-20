@@ -17,6 +17,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     required this.gameCubit,
     required this.platformsShader,
     required this.theBallShader,
+    required this.groundShader,
     required this.pixelRatio,
   }) : super(
           world: CrystalWorld(
@@ -29,11 +30,16 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
           ),
         ) {
     images.prefix = '';
+
     camera.removeFromParent();
 
-    addCamera(classicCamera);
-    addCamera(platformGlowCamera);
-    addCamera(theBallGlowCamera);
+    // addCamera(classicCamera);
+    // addCamera(platformGlowCamera);
+    // addCamera(theBallGlowCamera);
+
+    add(cameraWithCameras);
+    add(camerasWorld);
+
 
     world.addAll([
       directionalController = KeyboardHandlerSync(),
@@ -49,6 +55,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 
   final FragmentShader platformsShader;
   final FragmentShader theBallShader;
+  final FragmentShader groundShader;
 
   FutureOr<void> addCamera(CameraComponent component) {
     return add(component..follow(world.cameraTarget));
@@ -60,6 +67,23 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     width: kCameraSize.width,
     height: kCameraSize.height,
     world: camera.world,
+  );
+
+
+  late final camerasWorld = World();
+
+  late final cameraWithCameras = SamplerCamera(
+    samplerOwner: GroundSamplerOwner(
+      groundShader,
+      world,
+    ),
+    world: camerasWorld,
+    hudComponents: [
+      platformGlowCamera..follow(world.cameraTarget),
+      theBallGlowCamera..follow(world.cameraTarget),
+    ],
+    pixelRatio: pixelRatio,
+
   );
 
   late final platformGlowCamera = SamplerCamera.withFixedResolution(

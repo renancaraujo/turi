@@ -19,7 +19,7 @@ class CrystalWorld extends World {
         GameStateController(),
         reaper = Reaper(),
         theBall = TheBall(position: Vector2.zero()),
-        Ground(),
+        ground = Ground(),
       ],
     );
 
@@ -29,12 +29,13 @@ class CrystalWorld extends World {
 
     // add(
     //   Platform(
-    //     position: Vector2(0, -400),
+    //     position: Vector2(0, kPlayerRadius),
     //     random: random,
-    //     size: Vector2(kPlatformMinWidth + 100, kPlatformHeight),
-    //     color: PlatformColor.orange,
-    //   ),
+    //     size: Vector2(kCameraSize.width, kPlatformHeight),
+    //     color: PlatformColor.golden,
+    //   )..initialGlowGama = 20 ,
     // );
+
   }
 
   late final FlameMultiBlocProvider flameMultiBlocProvider;
@@ -42,8 +43,8 @@ class CrystalWorld extends World {
   late final cameraTarget = CameraTarget();
 
   late final Reaper reaper;
-
   late final TheBall theBall;
+  late final Ground ground;
 
   final Random random;
 

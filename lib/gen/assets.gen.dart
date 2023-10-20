@@ -9,6 +9,17 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsImagesGen {
+  const $AssetsImagesGen();
+
+  /// File path: assets/images/concrete.png
+  AssetGenImage get concrete =>
+      const AssetGenImage('assets/images/concrete.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [concrete];
+}
+
 class $AssetsLicensesGen {
   const $AssetsLicensesGen();
 
@@ -28,6 +39,7 @@ class $AssetsLicensesPoppinsGen {
 class Assets {
   Assets._();
 
+  static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLicensesGen licenses = $AssetsLicensesGen();
 }
 

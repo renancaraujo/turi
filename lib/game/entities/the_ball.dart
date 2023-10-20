@@ -30,7 +30,7 @@ class TheBall extends PositionComponent
   final double _gravity = kGravity;
 
   late double gama = 0.1;
-  double get radius => (1.0 - gama) / 2;
+  double get radius => (1.0 - gama) / 3;
 
   @override
   Future<void> onLoad() async {

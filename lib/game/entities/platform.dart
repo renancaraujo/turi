@@ -90,11 +90,10 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
   final PlatformColor color;
   double _distanceToBall = 0;
 
-  double get glowGama => _glowGama;
-  double _glowGama = 0;
 
-  final double _timerInitial = 0.1;
-  late double timer = _timerInitial;
+  double? initialGlowGama;
+  double glowGama = 0;
+
   final effectController = GoodCurvedEffectController(
     0.4,
     Curves.easeInOut,
@@ -111,7 +110,7 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
   void onMount() {
     super.onMount();
     scheduleMicrotask(() {
-      _glowTo(to: _getGlowGama(), duration: 0.3, curve: Curves.ease);
+      _glowTo(to: initialGlowGama??  _getGlowGama(), duration: 0.3, curve: Curves.ease);
     });
   }
 
@@ -144,14 +143,6 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
 
     if (!game.gameCubit.isPlaying) return;
 
-    timer -= dt;
-
-    if (timer <= 0) {
-      _glowTo(
-        to: _getGlowGama(),
-      );
-      timer = 0.4;
-    }
 
     if (y > game.world.reaper.y) {
       removeFromParent();
@@ -200,7 +191,7 @@ class PlatformGamaEffect extends Effect with EffectTarget<Platform> {
   void apply(double progress) {
     final delta = _to - _from;
     final position = _from + delta * progress;
-    target._glowGama = position;
+    target.glowGama = position;
   }
 
   void _change({required double to}) {

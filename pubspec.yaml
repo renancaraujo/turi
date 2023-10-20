@@ -41,3 +41,4 @@ flutter:
     - shaders/platforms.glsl
     - shaders/the_ball.glsl
     - shaders/mesh_25_gradient.glsl
+    - shaders/ground.glsl

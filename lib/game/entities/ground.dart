@@ -8,9 +8,14 @@ class Ground extends Component {
   Ground()
       : super(
           children: [
-            _Rectangle(),
+            Rectangle(kPlayerSize.height / 2),
           ],
-        );
+        ) {
+    rectangle = children.first as Rectangle;
+  }
+
+
+  late final Rectangle rectangle;
 
   @override
   void renderTree(Canvas canvas) {
@@ -23,12 +28,12 @@ class Ground extends Component {
   }
 }
 
-class _Rectangle extends PositionComponent
-    with CollisionCallbacks, ParentIsA<Ground> {
-  _Rectangle()
+class Rectangle extends PositionComponent
+    with CollisionCallbacks, ParentIsA<Ground>, HasGameRef<CrystalBallGame> {
+  Rectangle(this.ogY)
       : super(
           anchor: Anchor.topCenter,
-          position: Vector2(0, kPlayerSize.height / 2),
+          position: Vector2(0, ogY),
           size: Vector2(
             kCameraSize.width,
             kCameraSize.height / 2,
@@ -56,4 +61,11 @@ class _Rectangle extends PositionComponent
             ),
           ],
         );
+
+  final double ogY;
+
+
+  double get top => absolutePositionOfAnchor(Anchor.topCenter).y;
+
+
 }
