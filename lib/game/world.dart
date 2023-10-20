@@ -57,5 +57,4 @@ class CrystalWorld extends World {
   List<Platform> getPlatforms() {
     return children.query<Platform>();
   }
-
 }

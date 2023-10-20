@@ -29,7 +29,8 @@ class TheBallSamplerOwner extends SamplerOwner {
         ..setSize(size)
         ..setVector64(uvBall)
         ..setVector64(-velocity)
-        ..setFloat(theBall.gama);
+        ..setFloat(theBall.gama)
+        ..setFloat(theBall.radius);
     });
 
     canvas

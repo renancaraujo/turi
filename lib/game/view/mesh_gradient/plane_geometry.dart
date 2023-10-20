@@ -196,7 +196,7 @@ Offset deCasteljauInterpolation({
 
   final r = p * (1 - t) + q * t;
 
-  return r ;
+  return r;
 }
 
 Map<int, Offset?> _vectorWithinSizeCache = {};

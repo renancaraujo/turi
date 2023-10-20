@@ -4,8 +4,6 @@ import 'dart:ui' as ui;
 import 'package:crystal_ball/game/view/mesh_gradient/mesh_data_hash.dart';
 import 'package:flutter/material.dart';
 
-
-
 @immutable
 class Mesh25Data {
   const Mesh25Data({

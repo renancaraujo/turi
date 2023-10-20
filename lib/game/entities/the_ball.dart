@@ -30,6 +30,7 @@ class TheBall extends PositionComponent
   final double _gravity = kGravity;
 
   late double gama = 0.1;
+  double get radius => (1.0 - gama) / 2;
 
   @override
   Future<void> onLoad() async {
@@ -56,7 +57,7 @@ class TheBall extends PositionComponent
         _glowTo(to: 0.1, duration: 0.1);
       case GameState.starting:
         position = Vector2.zero();
-        _glowTo(to: 1, duration: kOpeningDuration);
+        _glowTo(to: 0.6, duration: kOpeningDuration);
         jump();
       case GameState.playing:
         break;
