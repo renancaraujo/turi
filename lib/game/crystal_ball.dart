@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
+import 'package:crystal_ball/gen/assets.gen.dart';
 import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart' show FlutterError, FlutterErrorDetails;
 
 class CrystalBallGame extends FlameGame<CrystalWorld>
     with HasKeyboardHandlerComponents, HasCollisionDetection {
@@ -15,9 +19,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     required this.textStyle,
     required this.random,
     required this.gameCubit,
-    required this.platformsShader,
-    required this.theBallShader,
-    required this.groundShader,
+    required this.assetsCache,
     required this.pixelRatio,
   }) : super(
           world: CrystalWorld(
@@ -40,7 +42,6 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     add(cameraWithCameras);
     add(camerasWorld);
 
-
     world.addAll([
       directionalController = KeyboardHandlerSync(),
     ]);
@@ -51,11 +52,9 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
   final GameCubit gameCubit;
   final double pixelRatio;
 
-  late final KeyboardHandlerSync directionalController;
+  final AssetsCache assetsCache;
 
-  final FragmentShader platformsShader;
-  final FragmentShader theBallShader;
-  final FragmentShader groundShader;
+  late final KeyboardHandlerSync directionalController;
 
   FutureOr<void> addCamera(CameraComponent component) {
     return add(component..follow(world.cameraTarget));
@@ -69,12 +68,11 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     world: camera.world,
   );
 
-
   late final camerasWorld = World();
 
   late final cameraWithCameras = SamplerCamera(
     samplerOwner: GroundSamplerOwner(
-      groundShader,
+      assetsCache.groundShader,
       world,
     ),
     world: camerasWorld,
@@ -83,12 +81,11 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
       theBallGlowCamera..follow(world.cameraTarget),
     ],
     pixelRatio: pixelRatio,
-
   );
 
   late final platformGlowCamera = SamplerCamera.withFixedResolution(
     samplerOwner: PlatformsSamplerOwner(
-      platformsShader,
+      assetsCache.platformsShader,
       world,
     ),
     world: camera.world,
@@ -99,7 +96,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 
   late final theBallGlowCamera = SamplerCamera.withFixedResolution(
     samplerOwner: TheBallSamplerOwner(
-      theBallShader,
+      assetsCache.theBallShader,
       world,
     ),
     world: camera.world,
@@ -115,4 +112,60 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 
   @override
   Future<void> onLoad() async {}
+}
+
+class AssetsCache {
+  AssetsCache({
+    required this.concreteImage,
+    required this.platformsShader,
+    required this.theBallShader,
+    required this.groundShader,
+  }) : super();
+
+  static Future<AssetsCache> loadAll() async {
+    final [concrete] = await Future.wait([
+      _loadImage(Assets.images.concrete.keyName),
+    ]);
+
+    final [
+      platformsShader,
+      theBallShader,
+      groundShader,
+    ] = await Future.wait([
+      _loadShader('shaders/platforms.glsl'),
+      _loadShader('shaders/the_ball.glsl'),
+      _loadShader('shaders/ground.glsl'),
+    ]);
+
+    return AssetsCache(
+      concreteImage: concrete,
+      platformsShader: platformsShader,
+      theBallShader: theBallShader,
+      groundShader: groundShader,
+    );
+  }
+
+  static Future<Image> _loadImage(String name) async {
+    final data = await Flame.bundle.load(name);
+    final bytes = Uint8List.view(data.buffer);
+    return decodeImageFromList(bytes);
+  }
+
+  static Future<FragmentShader> _loadShader(String name) async {
+    try {
+      final program = await FragmentProgram.fromAsset(name);
+      return program.fragmentShader();
+    } catch (error, stackTrace) {
+      FlutterError.reportError(
+        FlutterErrorDetails(exception: error, stack: stackTrace),
+      );
+      rethrow;
+    }
+  }
+
+  final Image concreteImage;
+
+  final FragmentShader platformsShader;
+  final FragmentShader theBallShader;
+  final FragmentShader groundShader;
 }

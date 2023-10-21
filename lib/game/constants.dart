@@ -14,7 +14,7 @@ const double kStartPlatformHeight = 400;
 const double kMeanPlatformInterval = 370;
 const double kPlatformIntervalVariation = 100;
 const double kPlatformMinWidth = 60;
-const double kPlatformWidthVariation = 160;
+const double kPlatformWidthVariation = 100;
 const double kPlatformHeight = 10;
 const double kPlatformPreloadArea = 1600;
 

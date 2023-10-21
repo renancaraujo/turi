@@ -29,7 +29,6 @@ float random(float x) {
 vec3 addNoiseToGradient(vec3 colorL, vec3 colorR, float distanceToA, float distanceToB) {
 
 
-
     // Calculate the interpolation factor with noise
     float t = distanceToA / (distanceToA + distanceToB);
 
@@ -52,25 +51,29 @@ vec3 addNoiseToGradient(vec3 colorL, vec3 colorR, float distanceToA, float dista
 }
 
 vec4 processPlatform(vec2 uv, vec2 a, vec2 b, vec3 colorL, vec3 colorR, float glowGama) {
-    float distanceToA = distance(a , uv);
+    float distanceToA = distance(a, uv);
     float distanceToB = distance(b, uv);
 
     vec3 gradient = addNoiseToGradient(colorL, colorR, distanceToA, distanceToB);
 
     float gama = glowGama;
 
-    if(uv.y > a.y) {
-        gama  = 10.0;
+    if (uv.y > a.y) {
+        gama  = 3.0;
     }
 
+    float light = acos(dot(normalize(a - uv), normalize(b - uv))) / PI;
 
-    float light = acos(dot(normalize(a - uv), normalize(b - uv))) / (PI  );
     light = clamp(light, 0.0, 1.0);
+
+    if (uv.y > a.y) {
+        light *= 0.7;
+    }
     gama = clamp(gama, 0.0, 100.0);
 
-    vec3 col = pow(light, gama*2) * gradient;
+    vec3 col = pow(light, gama) * gradient;
 
-    float alpha = pow(light* 0.01, gama) ;
+    float alpha = pow(light* 0.01, gama);
 
     return vec4(col, alpha);
 }
@@ -113,7 +116,7 @@ void main() {
     float noise = (fract(sin(dot(uv, vec2(12.9898, 78.233)*2.0)) * 43758.5453));
     float luma = getLuma(color.rgb);
 
-    if(luma > 0.01) {
+    if (luma > 0.01) {
         float llm = smoothstep(0.0, 0.4, luma);
         mdf *= llm * 0.3;
         color += noise * mdf;

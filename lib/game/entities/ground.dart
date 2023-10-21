@@ -14,7 +14,6 @@ class Ground extends Component {
     rectangle = children.first as Rectangle;
   }
 
-
   late final Rectangle rectangle;
 
   @override
@@ -64,8 +63,5 @@ class Rectangle extends PositionComponent
 
   final double ogY;
 
-
   double get top => absolutePositionOfAnchor(Anchor.topCenter).y;
-
-
 }

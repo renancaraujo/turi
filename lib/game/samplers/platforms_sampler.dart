@@ -34,7 +34,12 @@ class PlatformsSamplerOwner extends SamplerOwner {
 
     canvas
       ..save()
-      ..drawRect(Offset.zero & size, Paint()..shader = shader)
+      ..drawRect(
+        Offset.zero & size,
+        Paint()
+          ..shader = shader
+          ..blendMode = BlendMode.multiply,
+      )
       ..restore();
   }
 }

@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
 import 'package:flame/game.dart' hide Route;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_shaders/flutter_shaders.dart';
 
-class GamePage extends StatelessWidget {
+class GamePage extends StatefulWidget {
   const GamePage({super.key});
 
   static Route<void> route() {
@@ -18,6 +16,13 @@ class GamePage extends StatelessWidget {
   }
 
   @override
+  State<GamePage> createState() => _GamePageState();
+}
+
+class _GamePageState extends State<GamePage> {
+  late final Future<AssetsCache> _loadAssets = AssetsCache.loadAll();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -25,21 +30,27 @@ class GamePage extends StatelessWidget {
           providers: [
             BlocProvider<GameCubit>(create: (_) => GameCubit()),
           ],
-          child: ShaderBuilder(
-            assetKey: 'shaders/ground.glsl',
-            (context, groundShader, _) {
-              return ShaderBuilder(
-                assetKey: 'shaders/the_ball.glsl',
-                (context, theBallShader, _) => ShaderBuilder(
-                  assetKey: 'shaders/platforms.glsl',
-                  (context, platformsShader, _) {
-                    return GameView(
-                      platformsShader: platformsShader,
-                      theBallShader: theBallShader,
-                      groundShader: groundShader,
-                    );
-                  },
-                ),
+          child: FutureBuilder(
+            future: _loadAssets,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    'Error loading assets: ${snapshot.error}',
+                  ),
+                );
+              }
+
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              final assetsCache = snapshot.data!;
+
+              return GameView(
+                assetsCache: assetsCache,
               );
             },
           ),
@@ -51,17 +62,11 @@ class GamePage extends StatelessWidget {
 
 class GameView extends StatefulWidget {
   const GameView({
-    required this.platformsShader,
-    required this.theBallShader,
-    required this.groundShader,
+    required this.assetsCache,
     super.key,
-    this.game,
   });
 
-  final FlameGame? game;
-  final FragmentShader platformsShader;
-  final FragmentShader theBallShader;
-  final FragmentShader groundShader;
+  final AssetsCache assetsCache;
 
   @override
   State<GameView> createState() => _GameViewState();
@@ -80,16 +85,13 @@ class _GameViewState extends State<GameView> {
           fontSize: 4,
         );
 
-    _game ??= widget.game ??
-        CrystalBallGame(
-          gameCubit: gameCubit,
-          textStyle: textStyle,
-          random: random,
-          platformsShader: widget.platformsShader,
-          theBallShader: widget.theBallShader,
-            groundShader: widget.groundShader,
-          pixelRatio: MediaQuery.of(context).devicePixelRatio,
-        );
+    _game ??= CrystalBallGame(
+      gameCubit: gameCubit,
+      textStyle: textStyle,
+      random: random,
+      assetsCache: widget.assetsCache,
+      pixelRatio: 1,
+    );
 
     return ColoredBox(
       color: Colors.black,
@@ -112,7 +114,7 @@ class _GameViewState extends State<GameView> {
             );
           },
         },
-        initialActiveOverlays: ['vignette'],
+        initialActiveOverlays: const ['vignette'],
         game: _game!,
       ),
     );

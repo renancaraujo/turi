@@ -41,6 +41,8 @@ vec3 trace(vec2 uv) {
 
 void fragment(vec2 uv, inout vec4 color) {
 
+    float ballSize = 0.1;
+
 
     vec2 pos = uLightSource - uv;
     pos.y /= uSize.x/uSize.y;
@@ -48,7 +50,7 @@ void fragment(vec2 uv, inout vec4 color) {
     float dist = 1.0/length(pos);
     dist *= uRadius;
     dist = dist * uBrightness /2;
-    float ddist = pow(dist, 1.7);
+    float ddist = pow(dist, 1.1);
 
     vec3 col = ddist * vec3(0.8, 0.4, 1.0);
     col = 1.0 - exp(-col);

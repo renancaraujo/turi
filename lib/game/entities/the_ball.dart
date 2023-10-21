@@ -54,7 +54,7 @@ class TheBall extends PositionComponent
     switch (state) {
       case GameState.initial:
         position = Vector2.zero();
-        _glowTo(to: 0.1, duration: 0.1);
+        _glowTo(to: 0.1);
       case GameState.starting:
         position = Vector2.zero();
         _glowTo(to: 0.6, duration: kOpeningDuration);

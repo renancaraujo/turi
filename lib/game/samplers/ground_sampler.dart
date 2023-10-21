@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
-import 'package:flame/extensions.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 
 class GroundSamplerOwner extends SamplerOwner {
@@ -28,16 +27,13 @@ class GroundSamplerOwner extends SamplerOwner {
 
     final uvGround = (groundpos - originY) / (kCameraSize.asVector2.y);
 
-    final origin = cameraComponent!.visibleWorldRect.topLeft.toVector2();
-
-    final boundaryL = world.cameraTarget.x - kCameraSize.width / 2 + 100;
-    final boundaryR = world.cameraTarget.x + kCameraSize.width / 2 - 100;
-
-    final uvBoundaryL = (boundaryL - origin.x) /
-        (cameraComponent!.visibleWorldRect.size.toVector2().x);
-    final uvBoundaryR = (boundaryR - origin.x) /
-        (cameraComponent!.visibleWorldRect.size.toVector2().x);
-
+    // final boundaryL = world.cameraTarget.x - kCameraSize.width / 2 + 100;
+    // final boundaryR = world.cameraTarget.x + kCameraSize.width / 2 - 100;
+    //
+    // final uvBoundaryL = (boundaryL - origin.x) /
+    //     (cameraComponent!.visibleWorldRect.size.toVector2().x);
+    // final uvBoundaryR = (boundaryR - origin.x) /
+    //     (cameraComponent!.visibleWorldRect.size.toVector2().x);
 
     // print(cameraComponent!.visibleWorldRect.size);
 
@@ -46,9 +42,9 @@ class GroundSamplerOwner extends SamplerOwner {
         value
           ..setSize(size)
           ..setFloat(uvGround)
-          ..setFloat(uvBoundaryL.clamp(0, 1))
-          ..setFloat(uvBoundaryR.clamp(0, 1))..setFloat(time)
-        ;
+          ..setFloat(0)
+          ..setFloat(1)
+          ..setFloat(time);
       })
       ..setImageSampler(0, images[0]);
 
@@ -64,8 +60,4 @@ class GroundSamplerOwner extends SamplerOwner {
   }
 }
 
-extension on UniformsSetter {
-  void setVector64(Vector vector) {
-    setFloats(vector.storage);
-  }
-}
+extension on UniformsSetter {}

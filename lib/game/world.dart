@@ -35,7 +35,6 @@ class CrystalWorld extends World {
     //     color: PlatformColor.golden,
     //   )..initialGlowGama = 20 ,
     // );
-
   }
 
   late final FlameMultiBlocProvider flameMultiBlocProvider;

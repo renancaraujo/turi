@@ -90,7 +90,6 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
   final PlatformColor color;
   double _distanceToBall = 0;
 
-
   double? initialGlowGama;
   double glowGama = 0;
 
@@ -110,7 +109,11 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
   void onMount() {
     super.onMount();
     scheduleMicrotask(() {
-      _glowTo(to: initialGlowGama??  _getGlowGama(), duration: 0.3, curve: Curves.ease);
+      _glowTo(
+        to: initialGlowGama ?? _getGlowGama(),
+        duration: 0.3,
+        curve: Curves.ease,
+      );
     });
   }
 
@@ -142,7 +145,6 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
     }
 
     if (!game.gameCubit.isPlaying) return;
-
 
     if (y > game.world.reaper.y) {
       removeFromParent();
