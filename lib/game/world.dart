@@ -17,6 +17,8 @@ class CrystalWorld extends World {
       children: [
         PlatformSpawner(random: random),
         GameStateSync(),
+        SideRocksSpawner(),
+        BgRockPillarSpawner(),
         reaper = Reaper(),
         theBall = TheBall(position: Vector2.zero()),
         ground = Ground(),
@@ -50,7 +52,11 @@ class CrystalWorld extends World {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    add(BottomRock1());
+    add(BottomRock2());
 
+    add(BGRockBase());
+    add(BGRockBase2());
     children.register<Platform>();
   }
 

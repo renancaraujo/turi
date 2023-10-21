@@ -19,8 +19,10 @@ class PlatformSpawner extends Component
   bool needsPreloadCheck = false;
 
   Future<Platform> spawnPlatform({bool advance = true, double? avoidX}) async {
+    final width = kPlatformMinWidth +
+        random.nextDoubleAntiSmooth() * kPlatformWidthVariation;
     final y = currentMinY;
-    final padedHalfWidth = (kCameraSize.width - 400) / 2;
+    final padedHalfWidth = (kCameraSize.width - 130 - width / 2) / 2;
 
     late final double x;
     if (avoidX != null) {
@@ -34,9 +36,6 @@ class PlatformSpawner extends Component
     }
 
     final color = PlatformColor.rarityRandom(random);
-
-    final width = kPlatformMinWidth +
-        random.nextDoubleAntiSmooth() * kPlatformWidthVariation;
 
     final size = Vector2(width, kPlatformHeight);
 

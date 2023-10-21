@@ -223,7 +223,7 @@ class MeshVigenette extends StatelessWidget {
   Widget build(BuildContext context) {
     return IgnorePointer(
       child: Opacity(
-        opacity: 0.6,
+        opacity: 0.8,
         child: MeshGradient(
           data: vigenette,
         ),

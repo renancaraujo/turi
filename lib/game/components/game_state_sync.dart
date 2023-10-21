@@ -18,6 +18,11 @@ class GameStateSync extends Component
       case GameState.initial:
         setScore(0);
       case GameState.starting:
+        game.world.cameraTarget.go(
+          to: Vector2(0, -400),
+          curve: Curves.easeInOutCubic,
+          duration: kOpeningDuration,
+        );
         setScore(0);
         timer = Timer(
           kOpeningDuration,

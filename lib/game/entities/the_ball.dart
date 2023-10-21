@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
@@ -78,10 +79,10 @@ class TheBall extends PositionComponent
     }
 
     velocity.y += _gravity;
-    final horzV = velocity.y.abs() * 0.5;
+    final horzV = pow(velocity.y.abs(), 1.8) * 0.0015;
     velocity.x = game.inputHandler.directionalCoefficient * horzV;
 
-    final maxH = kCameraSize.width / 2 - kPlayerRadius;
+    final maxH = kCameraSize.width / 2 - kPlayerRadius - 50;
 
     position += velocity * dt;
     position.x = clampDouble(x, -maxH, maxH);
@@ -110,8 +111,8 @@ class TheBall extends PositionComponent
       jump();
       game.world.cameraTarget.go(
         to: Vector2(0, other.topLeftPosition.y - kCameraSize.height / 2 + 300),
-        duration: 4,
-        curve: Curves.decelerate,
+        duration: 10,
+        curve: Curves.easeOutBack,
       );
     }
 

@@ -6,7 +6,7 @@ const (double, double) kCameraSize = (900, 1600);
 const double kPlayerRadius = 20;
 const (double, double) kPlayerSize = (kPlayerRadius * 2, kPlayerRadius * 2);
 
-const double kOpeningDuration = 4;
+const double kOpeningDuration = 3;
 
 const double kPlatformSpawnDuration = 0.4;
 const double kPlatformVerticalInterval = 1;
@@ -19,10 +19,14 @@ const double kPlatformHeight = 10;
 const double kPlatformPreloadArea = 1600;
 
 const double kGravity = 100;
-const double kJumpVelocity = 2700;
+const double kJumpVelocity = 3000;
 const double kPlatforGlowDistance = 1000;
 
 const double kReaperTolerance = 800;
+
+const double kRockPreloadArea = 6600;
+const double kStartRockHeight = 800;
+const double kStartPillarHeight = 100;
 
 extension TransformRec on (double, double) {
   Vector2 get asVector2 => Vector2($1, $2);

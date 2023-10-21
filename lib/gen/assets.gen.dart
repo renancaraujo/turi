@@ -12,12 +12,31 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/bgrockbase.png
+  AssetGenImage get bgrockbase =>
+      const AssetGenImage('assets/images/bgrockbase.png');
+
+  /// File path: assets/images/bgrockpillar.png
+  AssetGenImage get bgrockpillar =>
+      const AssetGenImage('assets/images/bgrockpillar.png');
+
+  /// File path: assets/images/bottomRocks1.png
+  AssetGenImage get bottomRocks1 =>
+      const AssetGenImage('assets/images/bottomRocks1.png');
+
   /// File path: assets/images/concrete.png
   AssetGenImage get concrete =>
       const AssetGenImage('assets/images/concrete.png');
 
+  /// File path: assets/images/rocksl.png
+  AssetGenImage get rocksl => const AssetGenImage('assets/images/rocksl.png');
+
+  /// File path: assets/images/rocksr.png
+  AssetGenImage get rocksr => const AssetGenImage('assets/images/rocksr.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [concrete];
+  List<AssetGenImage> get values =>
+      [bgrockbase, bgrockpillar, bottomRocks1, concrete, rocksl, rocksr];
 }
 
 class $AssetsLicensesGen {

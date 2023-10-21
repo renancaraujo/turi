@@ -25,6 +25,12 @@ class PlatformsSamplerOwner extends SamplerOwner {
 
   @override
   void sampler(List<Image> images, Size size, Canvas canvas) {
+    if (canvas is SamplerCanvas<GroundSamplerOwner>) {
+      if (canvas.pass == 1) {
+        return;
+      }
+    }
+
     shader.setFloatUniforms((value) {
       value
         ..setSize(size)

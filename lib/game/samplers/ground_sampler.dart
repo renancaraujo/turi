@@ -6,7 +6,8 @@ import 'package:flutter_shaders/flutter_shaders.dart';
 
 class GroundSamplerOwner extends SamplerOwner {
   GroundSamplerOwner(
-    super.shader, {
+    super.shader,
+    this.rocksShader, {
     required this.world,
     required this.concreteTexture,
   });
@@ -14,8 +15,10 @@ class GroundSamplerOwner extends SamplerOwner {
   final CrystalWorld world;
   final Image concreteTexture;
 
+  final FragmentShader rocksShader;
+
   @override
-  int get passes => 1;
+  int get passes => 2;
 
   double time = 0;
 
@@ -51,6 +54,23 @@ class GroundSamplerOwner extends SamplerOwner {
         Paint()
           ..shader = shader
           ..blendMode = BlendMode.lighten,
+      )
+      ..restore();
+
+    // rocks
+
+    rocksShader
+      ..setFloatUniforms((value) {
+        value.setSize(size);
+      })
+      ..setImageSampler(0, images[1])
+      ..setImageSampler(1, images[0]);
+
+    canvas
+      ..save()
+      ..drawRect(
+        Offset.zero & size,
+        Paint()..shader = rocksShader,
       )
       ..restore();
   }

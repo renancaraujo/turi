@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:crystal_ball/game/game.dart';
 import 'package:crystal_ball/gen/assets.gen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,10 @@ import 'package:flutter/widgets.dart';
 class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+    if (bloc is ScoreCubit) {
+      return;
+    }
+
     super.onChange(bloc, change);
     log('onChange(${bloc.runtimeType}, $change)');
   }

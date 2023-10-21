@@ -22,8 +22,8 @@ class CameraTarget extends PositionComponent with HasGameRef<CrystalBallGame> {
   @override
   Color get debugColor => const Color(0xFFFFFF00);
 
-  @override
-  bool get debugMode => true;
+  // @override
+  // bool get debugMode => true;
 
   @override
   Future<void> onLoad() async {

@@ -14,7 +14,10 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart' show FlutterError, FlutterErrorDetails;
 
 class CrystalBallGame extends FlameGame<CrystalWorld>
-    with HasKeyboardHandlerComponents, HasCollisionDetection {
+    with
+        HasKeyboardHandlerComponents,
+        HasCollisionDetection,
+        SingleGameInstance {
   CrystalBallGame({
     required this.textStyle,
     required this.random,
@@ -64,26 +67,28 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 
   // cameras
 
-  // late final classicCamera = CameraComponent.withFixedResolution(
-  //   width: kCameraSize.width,
-  //   height: kCameraSize.height,
-  //   world: camera.world,
-  // );
-
   late final camerasWorld = World();
 
   late final cameraWithCameras = SamplerCamera(
     samplerOwner: GroundSamplerOwner(
       assetsCache.groundShader,
+      assetsCache.rocksShader,
       world: world,
       concreteTexture: assetsCache.concreteImage,
     ),
     world: camerasWorld,
     hudComponents: [
+      classicCamera..follow(world.cameraTarget),
       platformGlowCamera..follow(world.cameraTarget),
       theBallGlowCamera..follow(world.cameraTarget),
     ],
     pixelRatio: pixelRatio,
+  );
+
+  late final classicCamera = CameraComponent.withFixedResolution(
+    width: kCameraSize.width,
+    height: kCameraSize.height,
+    world: camera.world,
   );
 
   late final platformGlowCamera = SamplerCamera.withFixedResolution(
@@ -118,33 +123,64 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 }
 
 class AssetsCache {
-  AssetsCache({
-    required this.concreteImage,
-    required this.platformsShader,
-    required this.theBallShader,
-    required this.groundShader,
-  }) : super();
+  AssetsCache(
+      {
+      // images
+      required this.concreteImage,
+      required this.rocksRightImage,
+      required this.rocksLeftImage,
+      required this.rockBottom1Image,
+      required this.bgRockBaseImage,
+      required this.bgRockPillarImage,
+      // shaders
+      required this.platformsShader,
+      required this.theBallShader,
+      required this.groundShader,
+      required this.rocksShader,
+      r});
 
   static Future<AssetsCache> loadAll() async {
-    final [concrete] = await Future.wait([
+    final [
+      concrete,
+      rocksRight,
+      rocksLeft,
+      rocksBottom1,
+      bgrockbase,
+      bgrockpillar,
+    ] = await Future.wait([
       _loadImage(Assets.images.concrete.keyName),
+      _loadImage(Assets.images.rocksr.keyName),
+      _loadImage(Assets.images.rocksl.keyName),
+      _loadImage(Assets.images.bottomRocks1.keyName),
+      _loadImage(Assets.images.bgrockbase.keyName),
+      _loadImage(Assets.images.bgrockpillar.keyName),
     ]);
 
     final [
       platformsShader,
       theBallShader,
       groundShader,
+      rocksShader,
     ] = await Future.wait([
       _loadShader('shaders/platforms.glsl'),
       _loadShader('shaders/the_ball.glsl'),
       _loadShader('shaders/ground.glsl'),
+      _loadShader('shaders/rocks.glsl'),
     ]);
 
     return AssetsCache(
+      // images
       concreteImage: concrete,
+      rocksRightImage: rocksRight,
+      rocksLeftImage: rocksLeft,
+      rockBottom1Image: rocksBottom1,
+      bgRockBaseImage: bgrockbase,
+      bgRockPillarImage: bgrockpillar,
+      // shaders
       platformsShader: platformsShader,
       theBallShader: theBallShader,
       groundShader: groundShader,
+      rocksShader: rocksShader,
     );
   }
 
@@ -167,8 +203,14 @@ class AssetsCache {
   }
 
   final Image concreteImage;
+  final Image rocksRightImage;
+  final Image rocksLeftImage;
+  final Image rockBottom1Image;
+  final Image bgRockBaseImage;
+  final Image bgRockPillarImage;
 
   final FragmentShader platformsShader;
   final FragmentShader theBallShader;
   final FragmentShader groundShader;
+  final FragmentShader rocksShader;
 }

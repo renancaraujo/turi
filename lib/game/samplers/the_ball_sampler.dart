@@ -14,6 +14,12 @@ class TheBallSamplerOwner extends SamplerOwner {
 
   @override
   void sampler(List<Image> images, Size size, Canvas canvas) {
+    if (canvas is SamplerCanvas<GroundSamplerOwner>) {
+      if (canvas.pass == 1) {
+        return;
+      }
+    }
+
     final origin = cameraComponent!.visibleWorldRect.topLeft.toVector2();
 
     final theBall = world.theBall;
