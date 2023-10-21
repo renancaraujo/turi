@@ -79,7 +79,7 @@ class TheBall extends PositionComponent
 
     velocity.y += _gravity;
     final horzV = velocity.y.abs() * 0.5;
-    velocity.x = game.directionalController.directionalCoefficient * horzV;
+    velocity.x = game.inputHandler.directionalCoefficient * horzV;
 
     final maxH = kCameraSize.width / 2 - kPlayerRadius;
 
@@ -98,15 +98,20 @@ class TheBall extends PositionComponent
       velocity.y = 0;
       position.y = 0;
       jump();
+      game.world.cameraTarget.go(
+        to: Vector2(0, -400),
+        duration: 4,
+        curve: Curves.decelerate,
+      );
     }
     if (other is Platform && velocity.y > 0) {
       velocity.y = 0;
       position.y = other.topLeftPosition.y - kPlayerRadius;
       jump();
       game.world.cameraTarget.go(
-        to: Vector2(0, other.topLeftPosition.y - kCameraSize.height / 2 + 100),
-        duration: 2,
-        curve: Curves.ease,
+        to: Vector2(0, other.topLeftPosition.y - kCameraSize.height / 2 + 300),
+        duration: 4,
+        curve: Curves.decelerate,
       );
     }
 

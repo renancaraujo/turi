@@ -16,7 +16,7 @@ class CrystalWorld extends World {
       providers: providers,
       children: [
         PlatformSpawner(random: random),
-        GameStateController(),
+        GameStateSync(),
         reaper = Reaper(),
         theBall = TheBall(position: Vector2.zero()),
         ground = Ground(),

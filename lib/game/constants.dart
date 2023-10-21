@@ -19,7 +19,7 @@ const double kPlatformHeight = 10;
 const double kPlatformPreloadArea = 1600;
 
 const double kGravity = 100;
-const double kJumpVelocity = 3000;
+const double kJumpVelocity = 2700;
 const double kPlatforGlowDistance = 1000;
 
 const double kReaperTolerance = 800;

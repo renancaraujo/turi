@@ -1,12 +1,18 @@
 import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
+import 'package:flame/extensions.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 
 class GroundSamplerOwner extends SamplerOwner {
-  GroundSamplerOwner(super.shader, this.world);
+  GroundSamplerOwner(
+    super.shader, {
+    required this.world,
+    required this.concreteTexture,
+  });
 
   final CrystalWorld world;
+  final Image concreteTexture;
 
   @override
   int get passes => 1;
@@ -23,30 +29,20 @@ class GroundSamplerOwner extends SamplerOwner {
   void sampler(List<Image> images, Size size, Canvas canvas) {
     final originY = world.cameraTarget.y - kCameraSize.height / 2;
 
-    final groundpos = world.ground.rectangle.top;
+    final groundpos = world.ground.rectangle.top + 40;
 
     final uvGround = (groundpos - originY) / (kCameraSize.asVector2.y);
-
-    // final boundaryL = world.cameraTarget.x - kCameraSize.width / 2 + 100;
-    // final boundaryR = world.cameraTarget.x + kCameraSize.width / 2 - 100;
-    //
-    // final uvBoundaryL = (boundaryL - origin.x) /
-    //     (cameraComponent!.visibleWorldRect.size.toVector2().x);
-    // final uvBoundaryR = (boundaryR - origin.x) /
-    //     (cameraComponent!.visibleWorldRect.size.toVector2().x);
-
-    // print(cameraComponent!.visibleWorldRect.size);
 
     shader
       ..setFloatUniforms((value) {
         value
           ..setSize(size)
           ..setFloat(uvGround)
-          ..setFloat(0)
-          ..setFloat(1)
-          ..setFloat(time);
+          ..setFloat(time)
+          ..setVector64(concreteTexture.size);
       })
-      ..setImageSampler(0, images[0]);
+      ..setImageSampler(0, images[0])
+      ..setImageSampler(1, concreteTexture);
 
     canvas
       ..save()
@@ -60,4 +56,8 @@ class GroundSamplerOwner extends SamplerOwner {
   }
 }
 
-extension on UniformsSetter {}
+extension on UniformsSetter {
+  void setVector64(Vector vector) {
+    setFloats(vector.storage);
+  }
+}

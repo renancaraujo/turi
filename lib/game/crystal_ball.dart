@@ -19,6 +19,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     required this.textStyle,
     required this.random,
     required this.gameCubit,
+    required this.scoreCubit,
     required this.assetsCache,
     required this.pixelRatio,
   }) : super(
@@ -28,6 +29,9 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
               FlameBlocProvider<GameCubit, GameState>.value(
                 value: gameCubit,
               ),
+              FlameBlocProvider<ScoreCubit, int>.value(
+                value: scoreCubit,
+              ),
             ],
           ),
         ) {
@@ -35,26 +39,24 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 
     camera.removeFromParent();
 
-    // addCamera(classicCamera);
-    // addCamera(platformGlowCamera);
-    // addCamera(theBallGlowCamera);
-
     add(cameraWithCameras);
     add(camerasWorld);
 
     world.addAll([
-      directionalController = KeyboardHandlerSync(),
+      inputHandler = InputHandler(),
     ]);
   }
 
-  final TextStyle textStyle;
   final Random random;
-  final GameCubit gameCubit;
+  final TextStyle textStyle;
   final double pixelRatio;
+
+  final GameCubit gameCubit;
+  final ScoreCubit scoreCubit;
 
   final AssetsCache assetsCache;
 
-  late final KeyboardHandlerSync directionalController;
+  late final InputHandler inputHandler;
 
   FutureOr<void> addCamera(CameraComponent component) {
     return add(component..follow(world.cameraTarget));
@@ -62,18 +64,19 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 
   // cameras
 
-  late final classicCamera = CameraComponent.withFixedResolution(
-    width: kCameraSize.width,
-    height: kCameraSize.height,
-    world: camera.world,
-  );
+  // late final classicCamera = CameraComponent.withFixedResolution(
+  //   width: kCameraSize.width,
+  //   height: kCameraSize.height,
+  //   world: camera.world,
+  // );
 
   late final camerasWorld = World();
 
   late final cameraWithCameras = SamplerCamera(
     samplerOwner: GroundSamplerOwner(
       assetsCache.groundShader,
-      world,
+      world: world,
+      concreteTexture: assetsCache.concreteImage,
     ),
     world: camerasWorld,
     hudComponents: [

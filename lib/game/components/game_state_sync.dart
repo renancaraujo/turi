@@ -3,7 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/animation.dart';
 
-class GameStateController extends Component
+class GameStateSync extends Component
     with
         HasGameRef<CrystalBallGame>,
         FlameBlocListenable<GameCubit, GameState> {
@@ -16,13 +16,9 @@ class GameStateController extends Component
     timer = null;
     switch (state) {
       case GameState.initial:
-        break;
+        setScore(0);
       case GameState.starting:
-        game.world.cameraTarget.go(
-          to: Vector2(0, -kCameraSize.height / 4),
-          curve: Curves.easeInOutCubic,
-          duration: kOpeningDuration,
-        );
+        setScore(0);
         timer = Timer(
           kOpeningDuration,
           onTick: bloc.gameStarted,
@@ -30,6 +26,7 @@ class GameStateController extends Component
       case GameState.playing:
         break;
       case GameState.gameOver:
+        setScore(0);
         game.world.cameraTarget.go(
           to: Vector2(0, 0),
           curve: Curves.easeInOutCubic,
@@ -46,9 +43,20 @@ class GameStateController extends Component
     }
   }
 
+  void setScore(int score) {
+    game.scoreCubit.setScore(score);
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
     timer?.update(dt);
+
+    if (bloc.isPlaying) {
+      final current = -game.world.theBall.position.y.floor();
+      if (current > game.scoreCubit.state) {
+        setScore(current);
+      }
+    }
   }
 }

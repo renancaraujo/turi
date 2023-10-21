@@ -3,9 +3,9 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/services.dart';
 
-class KeyboardHandlerSync extends PositionComponent
+class InputHandler extends PositionComponent
     with TapCallbacks, HasGameRef<CrystalBallGame> {
-  KeyboardHandlerSync()
+  InputHandler()
       : super(
           anchor: Anchor.center,
           size: kCameraSize.asVector2,
