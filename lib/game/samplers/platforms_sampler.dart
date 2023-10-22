@@ -63,7 +63,6 @@ extension on UniformsSetter {
   void setPlatforms(List<Platform> platforms, CameraComponent cameraComponent) {
     final origin = cameraComponent.visibleWorldRect.topLeft.toVector2();
 
-
     // positions
     for (var i = 0; i < 18; i++) {
       if (i >= platforms.length) {
@@ -83,7 +82,7 @@ extension on UniformsSetter {
     }
 
     // colorsL
-    for (var i = 0; i <  18; i++) {
+    for (var i = 0; i < 18; i++) {
       if (i >= platforms.length) {
         setRGB(Colors.transparent);
         continue;
@@ -95,7 +94,7 @@ extension on UniformsSetter {
     }
 
     // colorsR
-    for (var i = 0; i <  18; i++) {
+    for (var i = 0; i < 18; i++) {
       if (i >= platforms.length) {
         setRGB(Colors.transparent);
         continue;
@@ -108,7 +107,7 @@ extension on UniformsSetter {
 
     // glow gama
 
-    for (var i = 0; i <  18; i++) {
+    for (var i = 0; i < 18; i++) {
       if (i >= platforms.length) {
         setFloat(0);
         continue;
