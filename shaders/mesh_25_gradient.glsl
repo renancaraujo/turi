@@ -5,11 +5,17 @@ precision mediump float;
 #include <flutter/runtime_effect.glsl>
 
 uniform vec2 uSize;
+uniform float showGrain;
 uniform vec4[25] colors;
 uniform float[25] colorBias;
 
 out vec4 fragColor;
 
+
+float getLuma(vec3 color) {
+    vec3 weights = vec3(0.299, 0.587, 0.114);
+    return dot(color, weights);
+}
 
 vec2 vertices(int index) {
     float x = mod(index, 5.0) / 4.0;
@@ -220,6 +226,16 @@ void main() {
     vec2 uv = pos / uSize;
 
     vec4 color = fragment(uv, pos);
+
+
+    if(showGrain == 1.0) {
+        float mdf = 0.07;
+        float noise = (fract(sin(dot(uv, vec2(12.9898, 78.233)*2.0)) * 43758.5453));
+        float luma = getLuma(color.rgb);
+        mdf *= (luma - 0.33) *3;
+        color += noise * mdf;
+    }
+
 
 
     fragColor = color;

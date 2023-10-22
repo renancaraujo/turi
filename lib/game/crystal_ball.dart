@@ -75,12 +75,15 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     samplerOwner: GroundSamplerOwner(
       assetsCache.groundShader,
       assetsCache.rocksShader,
+      assetsCache.fogShader,
+      classicCamera,
       world: world,
       concreteTexture: assetsCache.concreteImage,
     ),
     world: camerasWorld,
     hudComponents: [
       classicCamera..follow(world.cameraTarget),
+      fogCamera..follow(world.cameraTarget),
       platformGlowCamera..follow(world.cameraTarget),
       theBallGlowCamera..follow(world.cameraTarget),
     ],
@@ -91,6 +94,17 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     width: kCameraSize.width,
     height: kCameraSize.height,
     world: camera.world,
+  );
+
+  late final fogCamera = SamplerCamera.withFixedResolution(
+    samplerOwner: FogSamplerOwner(
+      assetsCache.fogShader,
+      world,
+    ),
+    world: camera.world,
+    width: kCameraSize.width,
+    height: kCameraSize.height,
+    pixelRatio: pixelRatio,
   );
 
   late final platformGlowCamera = SamplerCamera.withFixedResolution(
@@ -109,9 +123,9 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
       assetsCache.theBallShader,
       world,
     ),
-    world: camera.world,
     width: kCameraSize.width,
     height: kCameraSize.height,
+    world: camera.world,
     pixelRatio: pixelRatio,
   );
 
@@ -125,21 +139,21 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 }
 
 class AssetsCache {
-  AssetsCache(
-      {
-      // images
-      required this.concreteImage,
-      required this.rocksRightImage,
-      required this.rocksLeftImage,
-      required this.rockBottom1Image,
-      required this.bgRockBaseImage,
-      required this.bgRockPillarImage,
-      // shaders
-      required this.platformsShader,
-      required this.theBallShader,
-      required this.groundShader,
-      required this.rocksShader,
-      r});
+  AssetsCache({
+    // images
+    required this.concreteImage,
+    required this.rocksRightImage,
+    required this.rocksLeftImage,
+    required this.rockBottom1Image,
+    required this.bgRockBaseImage,
+    required this.bgRockPillarImage,
+    // shaders
+    required this.platformsShader,
+    required this.theBallShader,
+    required this.groundShader,
+    required this.rocksShader,
+    required this.fogShader,
+  });
 
   static Future<AssetsCache> loadAll() async {
     final [
@@ -152,7 +166,7 @@ class AssetsCache {
     ] = await Future.wait([
       _loadImage(Assets.images.concrete.keyName),
       _loadImage(Assets.images.rocksr.keyName),
-      _loadImage(Assets.images.rocksl.keyName),
+      _loadImage(Assets.images.rocksl2.keyName),
       _loadImage(Assets.images.bottomRocks1.keyName),
       _loadImage(Assets.images.bgrockbase.keyName),
       _loadImage(Assets.images.bgrockpillar.keyName),
@@ -163,11 +177,13 @@ class AssetsCache {
       theBallShader,
       groundShader,
       rocksShader,
+      fogShader,
     ] = await Future.wait([
       _loadShader('shaders/platforms.glsl'),
       _loadShader('shaders/the_ball.glsl'),
       _loadShader('shaders/ground.glsl'),
       _loadShader('shaders/rocks.glsl'),
+      _loadShader('shaders/fog.glsl'),
     ]);
 
     return AssetsCache(
@@ -183,6 +199,7 @@ class AssetsCache {
       theBallShader: theBallShader,
       groundShader: groundShader,
       rocksShader: rocksShader,
+      fogShader: fogShader,
     );
   }
 
@@ -215,4 +232,5 @@ class AssetsCache {
   final FragmentShader theBallShader;
   final FragmentShader groundShader;
   final FragmentShader rocksShader;
+  final FragmentShader fogShader;
 }

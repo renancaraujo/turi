@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
 import 'package:flame/game.dart' hide Route;
@@ -112,7 +113,7 @@ class _GameViewState extends State<GameView> {
           return const Center(
             child: AspectRatio(
               aspectRatio: 9 / 16,
-              child: MeshBackground(),
+              child: DynamicBackground(),
             ),
           );
         },
@@ -215,14 +216,14 @@ class HighScoreWidget extends StatelessWidget {
   }
 }
 
-class MeshBackground extends StatefulWidget {
-  const MeshBackground({super.key});
+class DynamicBackground extends StatefulWidget {
+  const DynamicBackground({super.key});
 
   @override
-  State<MeshBackground> createState() => _MeshBackgroundState();
+  State<DynamicBackground> createState() => _DynamicBackgroundState();
 }
 
-class _MeshBackgroundState extends State<MeshBackground> {
+class _DynamicBackgroundState extends State<DynamicBackground> {
   static Mesh25Data initial = Mesh25Data.fromHash('''
 789ce363b4b3cbdfcb00044c7677fd568118ccf6211f9e8118ac20c2f65661069b9dfa0461bb944987d9edd9541aedaa195773d887dd8cb5b3d8ecc969df005433b7e225b75d06c33e7b1ec6d53cf66c1ea2f66cc2c9bcf64153f8edb9d6de15b0cbe89a631f1fef2a68cf93e9686ffda250c83e74f91c7bbb9cb9dc0cff19b8e418ff33583531fd6750f361fecfa01dc5fa1f682fdb7f46311df6ff4cba411cff39e42cb840623cff19c475f941acff0c3cb2ff19d8b8ff33f08bfe171414e4b03be4246737db7c130020ed3a57''');
 
@@ -300,15 +301,16 @@ class MeshVigenette extends StatelessWidget {
   const MeshVigenette({super.key});
 
   static Mesh25Data vigenette = Mesh25Data.fromHash('''
-789c1366b4b3cbdfcb00044cf63c1e4b400c66fb900fcf400c5610617bab3083cd4e7d82b05dcaa4c3ecf66c2a8d76d58cab39ecc36ec6da596cf6e4b46f00aa995bf192db2ee248aebdeafca73cf66c1ea2f66cc2c9bcf6011153ec959db6f183ccb18fe8792b60576076cbbef049b5a03d13bb957dc9e56421fb803f87ecf3ef440983ccb14faefc226ad7fa7819882366cfb83f04c410b737dfda04620833fc67e092636460b06a62626050f3616660d08e62fd0f349c8d81514c879d81493788838143ce820b24c6cdc0c427c603d4aecbcbc0ce2bc80f121300a913049ac020046289de05b2c440843888f8cfc023fb9f818dfb3f980df4bf3d030400003587426b''');
+789c1366b4b3cbdfcb00044cf65c899e2006b37dc8876720062b88b0fdbac393cd4ee2db15dbbb0f02d8edfe2cd1b33d22c9c2611f65156f7b7f960ba77d0303831d4bcf5b6edb3f775aecfe1eeee6b1e79affdaeeffaf29bcf6895547ec19eba7f283ccb18fe8792b60e773f7bf7d6e41aca03d13bb957dc9e56421fb28c72cfbec2996c22073ec932bbf88dab53e5e06e288d933ee0f0131c4edcdb7368118c28cff41aeba0b24d81818c574d819987483381838e42c38ef32b072708124b81998f8c478809a747919d87905f9ee3230b3f1832404403a0419812c21104bf82e0313b32848420c44888388ff68988b010a00369747ee''');
 
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
       child: Opacity(
-        opacity: 0.8,
+        opacity: 1.0,
         child: MeshGradient(
           data: vigenette,
+          showGrain: true,
         ),
       ),
     );

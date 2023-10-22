@@ -33,10 +33,12 @@ class MeshGradient extends StatelessWidget {
     required this.data,
     super.key,
     this.showMesh = false,
+    this.showGrain = false,
   });
 
   final Mesh25Data data;
 
+  final bool showGrain;
   final bool showMesh;
 
   @override
@@ -49,6 +51,7 @@ class MeshGradient extends StatelessWidget {
             shader,
             data: data,
             showMesh: showMesh,
+            showGrain: showGrain,
           ),
           child: const SizedBox.expand(),
         );
@@ -64,12 +67,13 @@ class MeshGradientPainter extends CustomPainter {
     this.shader, {
     required this.data,
     required this.showMesh,
+    required this.showGrain,
   });
 
   final ui.FragmentShader shader;
 
   final Mesh25Data data;
-
+  final bool showGrain;
   final bool showMesh;
 
   @override
@@ -77,7 +81,9 @@ class MeshGradientPainter extends CustomPainter {
     shader.setFloatUniforms((s) {
       s
         ..setSize(size)
-        ..setColors(data.colors, premultiply: true);
+        ..setFloat(showGrain ? 1.0 : 0.0)
+        ..setColors(data.colors, premultiply: true)
+        ;
 
       for (var i = 0; i < data.vertices.length; i++) {
         final hasBias = data.selectedColors.containsKey(i);

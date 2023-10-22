@@ -7,6 +7,7 @@ precision highp float;
 uniform vec2 uSize;
 uniform float uReflecty;
 uniform float uTime;
+uniform float uLimitY;
 
 uniform sampler2D tTexture;
 uniform sampler2D tConcreteTexture;
@@ -18,6 +19,11 @@ void fragment(vec2 uv, vec2 pos, inout vec4 color) {
 
     vec4 waterColor = vec4(1.0);
 
+    if(uv.y > uLimitY) {
+        color = vec4(0.0, 0.0, 0.0, 0.0);
+        return;
+    }
+
     if (uv.y >= uReflecty) {
         vec2 oguv = uv.xy;
         uv.y = 2.0 * uReflecty - uv.y;
@@ -28,8 +34,8 @@ void fragment(vec2 uv, vec2 pos, inout vec4 color) {
 
         waterColor = vec4(1, 1, 1.0, 1.0);
         waterColor.rgb *=1 - ((oguv.y-uReflecty) / (1.0-uReflecty));
-        waterColor.rgb *= pow(texture(tConcreteTexture, uv).r, 0.8);
-        color.rgb *= texture(tConcreteTexture, uv).r;
+//        waterColor.rgb *= pow(texture(tConcreteTexture, uv).r, 0.8);
+//        color.rgb *= texture(tConcreteTexture, uv).r;
 
         if (uv.y <=0) {
             color = vec4(0.0, 0.0, 0.0, 0.0);

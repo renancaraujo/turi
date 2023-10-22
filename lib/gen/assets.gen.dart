@@ -9,6 +9,16 @@
 
 import 'package:flutter/widgets.dart';
 
+class $GoogleFontsGen {
+  const $GoogleFontsGen();
+
+  /// File path: google_fonts/Macondo-Regular.ttf
+  String get macondoRegular => 'google_fonts/Macondo-Regular.ttf';
+
+  /// List of all assets
+  List<String> get values => [macondoRegular];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -31,12 +41,22 @@ class $AssetsImagesGen {
   /// File path: assets/images/rocksl.png
   AssetGenImage get rocksl => const AssetGenImage('assets/images/rocksl.png');
 
+  /// File path: assets/images/rocksl2.png
+  AssetGenImage get rocksl2 => const AssetGenImage('assets/images/rocksl2.png');
+
   /// File path: assets/images/rocksr.png
   AssetGenImage get rocksr => const AssetGenImage('assets/images/rocksr.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [bgrockbase, bgrockpillar, bottomRocks1, concrete, rocksl, rocksr];
+  List<AssetGenImage> get values => [
+        bgrockbase,
+        bgrockpillar,
+        bottomRocks1,
+        concrete,
+        rocksl,
+        rocksl2,
+        rocksr
+      ];
 }
 
 class $AssetsLicensesGen {
@@ -60,6 +80,7 @@ class Assets {
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLicensesGen licenses = $AssetsLicensesGen();
+  static const $GoogleFontsGen googleFonts = $GoogleFontsGen();
 }
 
 class AssetGenImage {

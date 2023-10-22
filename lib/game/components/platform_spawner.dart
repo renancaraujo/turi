@@ -24,7 +24,7 @@ class PlatformSpawner extends Component
     final width = kPlatformMinWidth +
         random.nextDoubleAntiSmooth() * kPlatformWidthVariation;
     final y = currentMinY;
-    final padedHalfWidth = (kCameraSize.width - 130 - width / 2) / 2;
+    final padedHalfWidth = (kCameraSize.width - 150 - width / 2) / 2;
 
     final lastX = lastPlatform?.position.x ?? 0;
 
@@ -36,20 +36,17 @@ class PlatformSpawner extends Component
         x = random.nextDoubleInBetween(-padedHalfWidth, 0);
       }
     } else {
-
       var minX = padedHalfWidth;
       var maxX = padedHalfWidth;
-
-      if(lastX < -(padedHalfWidth * 0.7)) {
-        maxX = padedHalfWidth * 0.5;
-      } else if(lastX > (padedHalfWidth * 0.7)) {
-        minX = padedHalfWidth * 0.5;
+      if (lastX < -(padedHalfWidth * 0.6)) {
+        maxX = padedHalfWidth * 0.4;
+      } else if (lastX > (padedHalfWidth * 0.6)) {
+        minX = padedHalfWidth * 0.4;
       }
       x = random.nextDoubleInBetween(-minX, maxX);
     }
 
     final color = PlatformColor.rarityRandom(random);
-
     final size = Vector2(width, kPlatformHeight);
 
     final result = lastPlatform = Platform(

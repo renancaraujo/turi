@@ -183,8 +183,9 @@ class BottomRock2 extends PositionComponent with HasGameRef<CrystalBallGame> {
         ) {
     add(BottomRock2Sprite(size: kBottomRocks1Size));
 
-    position.x = -kCameraSize.width / 2 - 600;
-    position.y = 70;
+    position
+      ..x = -kCameraSize.width / 2 - 600
+      ..y = 70;
   }
 
   @override
@@ -224,7 +225,7 @@ class BGRockBase extends PositionComponent with HasGameRef<CrystalBallGame> {
 
     position
       ..x = -kCameraSize.width / 2 + 160
-      ..y = 0;
+      ..y = 40;
   }
 
   @override
@@ -267,7 +268,7 @@ class BGRockBase2 extends PositionComponent with HasGameRef<CrystalBallGame> {
 
     position
       ..x = kCameraSize.width / 2 - 160
-      ..y = -40;
+      ..y = 0;
   }
 
   @override

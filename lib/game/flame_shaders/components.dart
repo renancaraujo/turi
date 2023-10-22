@@ -85,3 +85,4 @@ class SamplerCamera<OwnerType extends SamplerOwner> extends CameraComponent {
     samplerOwner.update(dt);
   }
 }
+

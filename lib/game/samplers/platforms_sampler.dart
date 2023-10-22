@@ -36,7 +36,6 @@ class PlatformsSamplerOwner extends SamplerOwner {
         ..setSize(size)
         ..setPlatforms(_platforms, cameraComponent!);
     });
-    // ..setImageSampler(0, images[0]);
 
     canvas
       ..save()

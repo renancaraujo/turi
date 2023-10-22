@@ -46,3 +46,4 @@ flutter:
     - shaders/mesh_25_gradient.glsl
     - shaders/ground.glsl
     - shaders/rocks.glsl
+    - shaders/fog.glsl
