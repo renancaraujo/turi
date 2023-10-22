@@ -305,9 +305,11 @@ class MeshVigenette extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
-      child: Opacity(
-        opacity: 1,
+    return Transform(
+      transform: Matrix4.identity()
+        ..scale(1.001)
+        ..translate(-0.1, -0.1),
+      child: IgnorePointer(
         child: MeshGradient(
           data: vigenette,
           showGrain: true,

@@ -58,12 +58,12 @@ void fragment(vec2 cuv, vec2 pos, inout vec4 color, float timeMultiplier) {
     float tr = step(waterline - fade,uv.y);
     tr *= smoothstep(waterline - fade, waterline, uv.y);
     uv.y -= uGroundAdd;
-    uv *= 2.8;
+    uv *= 1.;
     uv.x  += uTime * timeMultiplier;
 
     float f = fractalNoise(uv);
     f *= tr;
-    f*= 0.5;
+    f*= 0.45;
 
     f = pow(f, 1.8);
     color = vec4( vec3(0.8, 0.4, 1.0) * f, f);
@@ -78,7 +78,7 @@ void main() {
 
 
     vec4 color2;
-    fragment(uv*2, pos, color2, -0.08 * sin(uTime * 0.01));
+    fragment(uv, pos, color2, -0.08 );
     
     fragColor = color + color2;
 }

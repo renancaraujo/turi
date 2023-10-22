@@ -22,7 +22,7 @@ const double kGravity = 100;
 const double kJumpVelocity = 3000;
 const double kPlatforGlowDistance = 1000;
 
-const double kReaperTolerance = 800;
+const double kReaperTolerance = 1000;
 
 const double kRockPreloadArea = 6600;
 const double kStartRockHeight = 800;

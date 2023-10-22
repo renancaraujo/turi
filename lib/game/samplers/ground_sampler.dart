@@ -47,7 +47,7 @@ class GroundSamplerOwner extends SamplerOwner {
         worldToUv(world.cameraTarget.position + kCameraSize.asVector2 / 2);
 
     final ssize = (innerCamera.viewport.size - Vector2.all(2))..ceil();
-    final spos = innerCamera.viewport.position..ceil();
+    final spos = (innerCamera.viewport.position + Vector2.all(2))..ceil();
     final clipRect = spos.toOffset() & ssize.toSize();
     canvas.clipRect(clipRect, doAntiAlias: false);
 
@@ -105,7 +105,7 @@ class GroundSamplerOwner extends SamplerOwner {
       value
         ..setFloat(uvGround)
         ..setFloat(uvCameraVerticalPos.y)
-        ..setFloat(2.4)
+        ..setFloat(3.4)
         ..setFloat(time * 1.2);
     });
 

@@ -88,16 +88,15 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
   }();
 
   final PlatformColor color;
-  double _distanceToBall = 0;
 
-  double? initialGlowGama;
+  double initialGlowGama = 6.1;
   double glowGama = 0;
 
   final effectController = GoodCurvedEffectController(
     0.4,
     Curves.easeInOut,
   )..setToEnd();
-  late final glowEffect = PlatformGamaEffect(400, effectController);
+  late final glowEffect = PlatformGamaEffect(20, effectController);
 
   @override
   Future<void> onLoad() async {
@@ -109,21 +108,21 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
   void onMount() {
     super.onMount();
     scheduleMicrotask(() {
-      _glowTo(
-        to: initialGlowGama ?? _getGlowGama(),
+      glowTo(
+        to: initialGlowGama,
         duration: 0.3,
         curve: Curves.ease,
       );
     });
   }
 
-  void _glowTo({
+  void glowTo({
     required double to,
     Curve curve = Curves.easeInOut,
     double duration = 0.1,
   }) {
     effectController
-      ..duration = duration * 4
+      ..duration = duration
       ..curve = curve;
 
     glowEffect._change(to: to);
@@ -133,26 +132,11 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
   void update(double dt) {
     super.update(dt);
 
-    final ballPs = game.world.theBall.position;
-    if (position.y < ballPs.y ||
-        ballPs.x > position.x + size.x / 2 ||
-        ballPs.x < position.x - size.x / 2) {
-      _distanceToBall = kPlatforGlowDistance;
-    } else {
-      _distanceToBall =
-          ballPs.distanceTo(position).clamp(0.0, kPlatforGlowDistance) /
-              kPlatforGlowDistance;
-    }
-
     if (!game.gameCubit.isPlaying) return;
 
     if (y > game.world.reaper.y) {
       removeFromParent();
     }
-  }
-
-  double _getGlowGama() {
-    return mix(1, 4, smoothStep(0, 1, pow(_distanceToBall, 2).toDouble()));
   }
 
   @override

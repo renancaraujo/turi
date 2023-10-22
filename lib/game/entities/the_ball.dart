@@ -114,6 +114,7 @@ class TheBall extends PositionComponent
         duration: 10,
         curve: Curves.easeOutBack,
       );
+      other.glowTo(to: 1.45, duration: 0.3);
     }
 
     if (other is Reaper && velocity.y > 0) {

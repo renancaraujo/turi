@@ -5,10 +5,10 @@ precision highp float;
 #include <flutter/runtime_effect.glsl>
 
 uniform vec2 uSize;
-uniform vec4[6] platformsAB;
-uniform vec3[6] colorsL;
-uniform vec3[6] colorsR;
-uniform float[6] glowGamas;
+uniform vec4[18] platformsAB;
+uniform vec3[18] colorsL;
+uniform vec3[18] colorsR;
+uniform float[18] glowGamas;
 
 
 //uniform sampler2D tTexture;
@@ -28,7 +28,6 @@ float random(float x) {
 
 vec3 addNoiseToGradient(vec3 colorL, vec3 colorR, float distanceToA, float distanceToB) {
 
-
     // Calculate the interpolation factor with noise
     float t = distanceToA / (distanceToA + distanceToB);
 
@@ -43,8 +42,6 @@ vec3 addNoiseToGradient(vec3 colorL, vec3 colorR, float distanceToA, float dista
 
     // Interpolate the colors with the noisy factor
     vec3 gradient = mix(colorL, colorR, t);
-
-
 
 
     return gradient;
