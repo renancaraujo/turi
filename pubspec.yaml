@@ -21,8 +21,10 @@ dependencies:
     sdk: flutter
   flutter_shaders: ^0.1.2
   google_fonts: ^6.1.0
+  hydrated_bloc: ^9.1.2
   intl: ^0.18.0
   mockingjay: ^0.4.0
+  path_provider: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -36,7 +38,8 @@ flutter:
   assets:
     - assets/audio/
     - assets/images/
-    - assets/licenses/poppins/
+    - assets/licenses/macondo/
+    - google_fonts/
   shaders:
     - shaders/platforms.glsl
     - shaders/the_ball.glsl

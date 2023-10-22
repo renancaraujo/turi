@@ -41,8 +41,7 @@ class GroundSamplerOwner extends SamplerOwner {
         value
           ..setSize(size)
           ..setFloat(uvGround)
-          ..setFloat(time)
-          ..setVector64(concreteTexture.size);
+          ..setFloat(time);
       })
       ..setImageSampler(0, images[0])
       ..setImageSampler(1, concreteTexture);

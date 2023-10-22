@@ -1,13 +1,12 @@
 #version 460 core
 
-precision mediump float;
+precision highp float;
 
 #include <flutter/runtime_effect.glsl>
 
 uniform vec2 uSize;
 uniform float uReflecty;
 uniform float uTime;
-uniform vec2 uConcreteSize;
 
 uniform sampler2D tTexture;
 uniform sampler2D tConcreteTexture;

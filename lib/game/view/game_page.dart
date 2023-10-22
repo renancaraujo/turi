@@ -31,15 +31,14 @@ class _GamePageState extends State<GamePage> {
           providers: [
             BlocProvider<GameCubit>(create: (_) => GameCubit()),
             BlocProvider<ScoreCubit>(create: (_) => ScoreCubit()),
+            BlocProvider<HighScoreCubit>(create: (_) => HighScoreCubit()),
           ],
           child: FutureBuilder(
             future: _loadAssets,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(
-                  child: Text(
-                    'Error loading assets: ${snapshot.error}',
-                  ),
+                  child: Text('Error loading assets: ${snapshot.error}'),
                 );
               }
 
@@ -80,6 +79,7 @@ class _GameViewState extends State<GameView> {
   late final random = Random();
   late final gameCubit = context.read<GameCubit>();
   late final scoreCubit = context.read<ScoreCubit>();
+  late final highScoreCubit = context.read<HighScoreCubit>();
 
   @override
   void initState() {
@@ -98,6 +98,7 @@ class _GameViewState extends State<GameView> {
     _game ??= CrystalBallGame(
       gameCubit: gameCubit,
       scoreCubit: scoreCubit,
+      highScoreCubit: highScoreCubit,
       textStyle: textStyle,
       random: random,
       assetsCache: widget.assetsCache,
@@ -124,10 +125,92 @@ class _GameViewState extends State<GameView> {
               ),
             );
           },
+          'score': (context, game) {
+            return const Center(
+              child: AspectRatio(
+                aspectRatio: 9 / 16,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: ScoreWidget(),
+                ),
+              ),
+            );
+          },
+          'highscore': (context, game) {
+            return const Center(
+              child: AspectRatio(
+                aspectRatio: 9 / 16,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: HighScoreWidget(),
+                ),
+              ),
+            );
+          },
         },
-        initialActiveOverlays: const ['vignette'],
+        initialActiveOverlays: const ['vignette', 'score', 'highscore'],
         game: _game!,
       ),
+    );
+  }
+}
+
+class ScoreWidget extends StatelessWidget {
+  const ScoreWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GameCubit, GameState>(
+      builder: (context, state) {
+        return AnimatedOpacity(
+          opacity:
+              state == GameState.playing || state == GameState.starting ? 1 : 0,
+          duration: state == GameState.gameOver
+              ? Duration.zero
+              : const Duration(milliseconds: 400),
+          child: AnimatedContainer(
+            alignment: state == GameState.playing || state == GameState.starting
+                ? Alignment.bottomCenter
+                : const Alignment(0, 1.1),
+            duration: const Duration(milliseconds: 400),
+            child: Text(
+              'Score: ${(context.watch<ScoreCubit>().state / 100).floor()}',
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class HighScoreWidget extends StatelessWidget {
+  const HighScoreWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GameCubit, GameState>(
+      builder: (context, state) {
+        return AnimatedOpacity(
+          opacity:
+              state == GameState.gameOver || state == GameState.initial ? 1 : 0,
+          duration: const Duration(milliseconds: 400),
+          child: AnimatedContainer(
+            alignment: state == GameState.gameOver || state == GameState.initial
+                ? Alignment.topCenter
+                : const Alignment(0, -1.2),
+            duration: const Duration(milliseconds: 400),
+            child: Text(
+              'High Score: ${(context.watch<HighScoreCubit>().state / 100).floor()}',
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

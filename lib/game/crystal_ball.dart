@@ -23,6 +23,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     required this.random,
     required this.gameCubit,
     required this.scoreCubit,
+    required this.highScoreCubit,
     required this.assetsCache,
     required this.pixelRatio,
   }) : super(
@@ -56,6 +57,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 
   final GameCubit gameCubit;
   final ScoreCubit scoreCubit;
+  final HighScoreCubit highScoreCubit;
 
   final AssetsCache assetsCache;
 

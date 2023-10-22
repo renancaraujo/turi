@@ -61,6 +61,7 @@ class GameStateSync extends Component
       final current = -game.world.theBall.position.y.floor();
       if (current > game.scoreCubit.state) {
         setScore(current);
+        game.highScoreCubit.setScore(current);
       }
     }
   }

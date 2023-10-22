@@ -18,11 +18,15 @@ class PlatformSpawner extends Component
 
   bool needsPreloadCheck = false;
 
+  Platform? lastPlatform;
+
   Future<Platform> spawnPlatform({bool advance = true, double? avoidX}) async {
     final width = kPlatformMinWidth +
         random.nextDoubleAntiSmooth() * kPlatformWidthVariation;
     final y = currentMinY;
     final padedHalfWidth = (kCameraSize.width - 130 - width / 2) / 2;
+
+    final lastX = lastPlatform?.position.x ?? 0;
 
     late final double x;
     if (avoidX != null) {
@@ -32,14 +36,23 @@ class PlatformSpawner extends Component
         x = random.nextDoubleInBetween(-padedHalfWidth, 0);
       }
     } else {
-      x = random.nextDoubleInBetween(-padedHalfWidth, padedHalfWidth);
+
+      var minX = padedHalfWidth;
+      var maxX = padedHalfWidth;
+
+      if(lastX < -(padedHalfWidth * 0.7)) {
+        maxX = padedHalfWidth * 0.5;
+      } else if(lastX > (padedHalfWidth * 0.7)) {
+        minX = padedHalfWidth * 0.5;
+      }
+      x = random.nextDoubleInBetween(-minX, maxX);
     }
 
     final color = PlatformColor.rarityRandom(random);
 
     final size = Vector2(width, kPlatformHeight);
 
-    final result = Platform(
+    final result = lastPlatform = Platform(
       position: Vector2(x, -y),
       random: random,
       size: size,

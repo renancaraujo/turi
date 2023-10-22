@@ -7,6 +7,9 @@ import 'package:crystal_ball/gen/assets.gen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -31,11 +34,19 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
 
+
+  WidgetsFlutterBinding.ensureInitialized();
+  final storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
+  HydratedBloc.storage = storage;
+
   Bloc.observer = AppBlocObserver();
 
   LicenseRegistry.addLicense(() async* {
-    final poppins = await rootBundle.loadString(Assets.licenses.poppins.ofl);
-    yield LicenseEntryWithLineBreaks(['poppins'], poppins);
+    final macondo = await rootBundle.loadString(Assets.licenses.macondo.ofl);
+    yield LicenseEntryWithLineBreaks(['macondo'], macondo);
   });
 
   runApp(await builder());

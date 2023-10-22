@@ -5,6 +5,7 @@ import 'package:crystal_ball/loading/loading.dart';
 import 'package:flame/cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -35,8 +36,9 @@ class AppView extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: const ColorScheme.dark(
-          primary: Color(0xFF00B5FF),
+          primary: Color(0xFF9E0AFF),
         ),
+        textTheme: GoogleFonts.macondoTextTheme(),
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

@@ -42,14 +42,14 @@ class $AssetsImagesGen {
 class $AssetsLicensesGen {
   const $AssetsLicensesGen();
 
-  $AssetsLicensesPoppinsGen get poppins => const $AssetsLicensesPoppinsGen();
+  $AssetsLicensesMacondoGen get macondo => const $AssetsLicensesMacondoGen();
 }
 
-class $AssetsLicensesPoppinsGen {
-  const $AssetsLicensesPoppinsGen();
+class $AssetsLicensesMacondoGen {
+  const $AssetsLicensesMacondoGen();
 
-  /// File path: assets/licenses/poppins/OFL.txt
-  String get ofl => 'assets/licenses/poppins/OFL.txt';
+  /// File path: assets/licenses/macondo/OFL.txt
+  String get ofl => 'assets/licenses/macondo/OFL.txt';
 
   /// List of all assets
   List<String> get values => [ofl];
