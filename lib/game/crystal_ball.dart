@@ -40,12 +40,10 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
           ),
         ) {
     images.prefix = '';
-
     camera.removeFromParent();
-
     add(cameraWithCameras);
-    add(camerasWorld);
 
+    add(dummyWorld);
     world.addAll([
       inputHandler = InputHandler(),
     ]);
@@ -67,9 +65,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
     return add(component..follow(world.cameraTarget));
   }
 
-  // cameras
-
-  late final camerasWorld = World();
+  final dummyWorld = World();
 
   late final cameraWithCameras = SamplerCamera(
     samplerOwner: GroundSamplerOwner(
@@ -78,9 +74,8 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
       assetsCache.fogShader,
       classicCamera,
       world: world,
-      concreteTexture: assetsCache.concreteImage,
     ),
-    world: camerasWorld,
+    world: dummyWorld,
     hudComponents: [
       classicCamera..follow(world.cameraTarget),
       fogCamera..follow(world.cameraTarget),
@@ -141,12 +136,12 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 class AssetsCache {
   AssetsCache({
     // images
-    required this.concreteImage,
     required this.rocksRightImage,
     required this.rocksLeftImage,
     required this.rockBottom1Image,
     required this.bgRockBaseImage,
     required this.bgRockPillarImage,
+    required this.logoImage,
     // shaders
     required this.platformsShader,
     required this.theBallShader,
@@ -157,19 +152,19 @@ class AssetsCache {
 
   static Future<AssetsCache> loadAll() async {
     final [
-      concrete,
       rocksRight,
       rocksLeft,
       rocksBottom1,
       bgrockbase,
       bgrockpillar,
+      logo,
     ] = await Future.wait([
-      _loadImage(Assets.images.concrete.keyName),
       _loadImage(Assets.images.rocksr.keyName),
       _loadImage(Assets.images.rocksl2.keyName),
       _loadImage(Assets.images.bottomRocks1.keyName),
       _loadImage(Assets.images.bgrockbase.keyName),
       _loadImage(Assets.images.bgrockpillar.keyName),
+      _loadImage(Assets.images.turilogo.keyName),
     ]);
 
     final [
@@ -188,12 +183,12 @@ class AssetsCache {
 
     return AssetsCache(
       // images
-      concreteImage: concrete,
       rocksRightImage: rocksRight,
       rocksLeftImage: rocksLeft,
       rockBottom1Image: rocksBottom1,
       bgRockBaseImage: bgrockbase,
       bgRockPillarImage: bgrockpillar,
+      logoImage: logo,
       // shaders
       platformsShader: platformsShader,
       theBallShader: theBallShader,
@@ -221,12 +216,12 @@ class AssetsCache {
     }
   }
 
-  final Image concreteImage;
   final Image rocksRightImage;
   final Image rocksLeftImage;
   final Image rockBottom1Image;
   final Image bgRockBaseImage;
   final Image bgRockPillarImage;
+  final Image logoImage;
 
   final FragmentShader platformsShader;
   final FragmentShader theBallShader;

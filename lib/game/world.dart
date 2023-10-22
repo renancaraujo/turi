@@ -19,6 +19,7 @@ class CrystalWorld extends World {
         GameStateSync(),
         SideRocksSpawner(),
         BgRockPillarSpawner(),
+        LogoComponent(),
         reaper = Reaper(),
         theBall = TheBall(position: Vector2.zero()),
         ground = Ground(),
@@ -54,7 +55,6 @@ class CrystalWorld extends World {
     await super.onLoad();
     add(BottomRock1());
     add(BottomRock2());
-
     add(BGRockBase());
     add(BGRockBase2());
     children.register<Platform>();

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
 import 'package:flame/game.dart' hide Route;
@@ -204,7 +203,8 @@ class HighScoreWidget extends StatelessWidget {
                 : const Alignment(0, -1.2),
             duration: const Duration(milliseconds: 400),
             child: Text(
-              'High Score: ${(context.watch<HighScoreCubit>().state / 100).floor()}',
+              '''
+High Score: ${(context.watch<HighScoreCubit>().state / 100).floor()}''',
               style: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: Colors.white,
                   ),
@@ -307,7 +307,7 @@ class MeshVigenette extends StatelessWidget {
   Widget build(BuildContext context) {
     return IgnorePointer(
       child: Opacity(
-        opacity: 1.0,
+        opacity: 1,
         child: MeshGradient(
           data: vigenette,
           showGrain: true,

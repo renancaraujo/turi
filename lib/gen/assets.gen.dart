@@ -34,10 +34,6 @@ class $AssetsImagesGen {
   AssetGenImage get bottomRocks1 =>
       const AssetGenImage('assets/images/bottomRocks1.png');
 
-  /// File path: assets/images/concrete.png
-  AssetGenImage get concrete =>
-      const AssetGenImage('assets/images/concrete.png');
-
   /// File path: assets/images/rocksl.png
   AssetGenImage get rocksl => const AssetGenImage('assets/images/rocksl.png');
 
@@ -47,15 +43,19 @@ class $AssetsImagesGen {
   /// File path: assets/images/rocksr.png
   AssetGenImage get rocksr => const AssetGenImage('assets/images/rocksr.png');
 
+  /// File path: assets/images/turilogo.png
+  AssetGenImage get turilogo =>
+      const AssetGenImage('assets/images/turilogo.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         bgrockbase,
         bgrockpillar,
         bottomRocks1,
-        concrete,
         rocksl,
         rocksl2,
-        rocksr
+        rocksr,
+        turilogo
       ];
 }
 

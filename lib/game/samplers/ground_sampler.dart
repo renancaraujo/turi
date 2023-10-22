@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:crystal_ball/game/game.dart';
 import 'package:flame/camera.dart';
 import 'package:flame/extensions.dart';
+import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_shaders/flutter_shaders.dart';
 
 class GroundSamplerOwner extends SamplerOwner {
@@ -12,13 +13,11 @@ class GroundSamplerOwner extends SamplerOwner {
     this.fogShader,
     this.innerCamera, {
     required this.world,
-    required this.concreteTexture,
   });
 
   final CameraComponent innerCamera;
 
   final CrystalWorld world;
-  final Image concreteTexture;
 
   final FragmentShader rocksShader;
   final FragmentShader fogShader;
@@ -45,7 +44,12 @@ class GroundSamplerOwner extends SamplerOwner {
     final uvGround = worldToUv(groundpos).y;
 
     final limitY =
-        worldToUv(world.cameraTarget.position + kCameraSize.asVector2 / 2).y;
+        worldToUv(world.cameraTarget.position + kCameraSize.asVector2 / 2);
+
+    final ssize = (innerCamera.viewport.size - Vector2.all(2))..ceil();
+    final spos = innerCamera.viewport.position..ceil();
+    final clipRect = spos.toOffset() & ssize.toSize();
+    canvas.clipRect(clipRect, doAntiAlias: false);
 
     shader
       ..setFloatUniforms((value) {
@@ -53,20 +57,16 @@ class GroundSamplerOwner extends SamplerOwner {
           ..setSize(size)
           ..setFloat(uvGround)
           ..setFloat(time)
-          ..setFloat(limitY);
+          ..setFloat(limitY.y);
       })
-      ..setImageSampler(0, images[0])
-      ..setImageSampler(1, concreteTexture);
+      ..setImageSampler(0, images[0]);
 
-    canvas
-      ..save()
-      ..drawRect(
-        Offset.zero & size,
-        Paint()
-          ..shader = shader
-          ..blendMode = BlendMode.lighten,
-      )
-      ..restore();
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()
+        ..shader = shader
+        ..blendMode = BlendMode.lighten,
+    );
 
     // fog
 
@@ -81,13 +81,10 @@ class GroundSamplerOwner extends SamplerOwner {
       ..setImageSampler(0, images[1])
       ..setImageSampler(1, images[0]);
 
-    canvas
-      ..save()
-      ..drawRect(
-        Offset.zero & size,
-        Paint()..shader = rocksShader,
-      )
-      ..restore();
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()..shader = rocksShader,
+    );
   }
 
   void applyFog(Size size, Canvas canvas) {
@@ -95,35 +92,30 @@ class GroundSamplerOwner extends SamplerOwner {
       value.setSize(size);
 
       final groundpos =
-          world.ground.rectangle.absolutePosition + Vector2(0, 420);
+          world.ground.rectangle.absolutePosition + Vector2(0, 1800);
       final uvGround = worldToUv(groundpos).y;
 
-      final cameraVerticalPos = world.cameraTarget.position.clone()..absolute();
+      final cameraVerticalPos = world.cameraTarget.position.clone()
+        ..absolute()
+        ..y *= 1.9;
 
-      final uvCameraVerticalPos = (cameraVerticalPos)
+      final uvCameraVerticalPos = cameraVerticalPos
         ..divide(kCameraSize.asVector2);
-
 
       value
         ..setFloat(uvGround)
         ..setFloat(uvCameraVerticalPos.y)
-        ..setFloat(0.42)..setFloat(time*1.2);
+        ..setFloat(2.4)
+        ..setFloat(time * 1.2);
     });
 
-    canvas
-      ..save()
-      ..drawRect(
-        Offset.zero & size,
-        Paint()
-          ..shader = fogShader
-          ..blendMode = BlendMode.lighten,
-      )
-      ..restore();
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()
+        ..shader = fogShader
+        ..blendMode = BlendMode.plus,
+    );
   }
 }
 
-extension on UniformsSetter {
-  void setVector64(Vector vector) {
-    setFloats(vector.storage);
-  }
-}
+extension on UniformsSetter {}

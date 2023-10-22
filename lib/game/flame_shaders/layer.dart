@@ -46,6 +46,8 @@ class FragmentShaderLayer {
       images.add(_renderPass(size, i));
     }
 
+    canvas.save();
     sampler(images, size, canvas);
+    canvas.restore();
   }
 }

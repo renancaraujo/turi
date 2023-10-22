@@ -82,8 +82,7 @@ class MeshGradientPainter extends CustomPainter {
       s
         ..setSize(size)
         ..setFloat(showGrain ? 1.0 : 0.0)
-        ..setColors(data.colors, premultiply: true)
-        ;
+        ..setColors(data.colors, premultiply: true);
 
       for (var i = 0; i < data.vertices.length; i++) {
         final hasBias = data.selectedColors.containsKey(i);

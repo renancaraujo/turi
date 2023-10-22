@@ -10,7 +10,6 @@ class HighScoreCubit extends HydratedCubit<int> {
     emit(highScore);
   }
 
-
   @override
   int? fromJson(Map<String, dynamic> json) {
     final highScore = json['highScore'] as int?;

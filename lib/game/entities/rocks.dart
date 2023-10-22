@@ -20,7 +20,7 @@ class SideRocksSpawner extends Component with HasGameRef<CrystalBallGame> {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    _spawnRock();
+    await _spawnRock();
   }
 
   SideRock? _lastSpawnedRight;
@@ -141,11 +141,12 @@ class SideRockLeftSprite extends SpriteComponent
 }
 
 class BottomRock1 extends PositionComponent with HasGameRef<CrystalBallGame> {
-  BottomRock1() : super(size: kSideRocksRSize, priority: 100) {
+  BottomRock1() : super(size: kBottomRocks1Size, priority: 100) {
     add(BottomRock1Sprite(size: kBottomRocks1Size));
 
-    position.x = -kCameraSize.width / 2 + 150;
-    position.y = 100;
+    position
+      ..x = -kCameraSize.width / 2 + 150
+      ..y = 300;
   }
 
   @override
@@ -177,15 +178,22 @@ class BottomRock1Sprite extends SpriteComponent
 class BottomRock2 extends PositionComponent with HasGameRef<CrystalBallGame> {
   BottomRock2()
       : super(
-          size: kSideRocksRSize * 0.4,
+          size: kBottomRocks1Size,
           priority: 100,
           anchor: Anchor.topRight,
         ) {
     add(BottomRock2Sprite(size: kBottomRocks1Size));
 
-    position
-      ..x = -kCameraSize.width / 2 - 600
-      ..y = 70;
+    // position
+    //   ..x = -kCameraSize.width / 2 - 600
+    //   ..y = 70;
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    y = 200;
   }
 
   @override
@@ -288,7 +296,7 @@ class BgRockPillarSpawner extends Component with HasGameRef<CrystalBallGame> {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    _spawnRock();
+    await _spawnRock();
   }
 
   BgPillarRock? _lastSpawned;

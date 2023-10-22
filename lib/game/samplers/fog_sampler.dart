@@ -1,9 +1,7 @@
 import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
-import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
-import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_shaders/flutter_shaders.dart';
 
 class FogSamplerOwner extends SamplerOwner {
@@ -40,18 +38,18 @@ class FogSamplerOwner extends SamplerOwner {
       value.setSize(size);
 
       final groundpos =
-          world.ground.rectangle.absolutePosition + Vector2(0, 100);
+          world.ground.rectangle.absolutePosition + Vector2(0, 200);
       final uvGround = (groundpos - origin)..divide(kCameraSize.asVector2);
 
       final cameraVerticalPos = world.cameraTarget.position.clone()..absolute();
 
-      final uvCameraVerticalPos = (cameraVerticalPos)
+      final uvCameraVerticalPos = cameraVerticalPos
         ..divide(kCameraSize.asVector2);
 
       value
         ..setFloat(uvGround.y)
         ..setFloat(uvCameraVerticalPos.y)
-        ..setFloat(0.08)
+        ..setFloat(0.3)
         ..setFloat(time);
     });
 
@@ -67,8 +65,4 @@ class FogSamplerOwner extends SamplerOwner {
   }
 }
 
-extension on UniformsSetter {
-  void setVector64(Vector vector) {
-    setFloats(vector.storage);
-  }
-}
+extension on UniformsSetter {}

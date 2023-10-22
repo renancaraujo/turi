@@ -10,7 +10,6 @@ uniform float uTime;
 uniform float uLimitY;
 
 uniform sampler2D tTexture;
-uniform sampler2D tConcreteTexture;
 
 
 out vec4 fragColor;
@@ -34,8 +33,6 @@ void fragment(vec2 uv, vec2 pos, inout vec4 color) {
 
         waterColor = vec4(1, 1, 1.0, 1.0);
         waterColor.rgb *=1 - ((oguv.y-uReflecty) / (1.0-uReflecty));
-//        waterColor.rgb *= pow(texture(tConcreteTexture, uv).r, 0.8);
-//        color.rgb *= texture(tConcreteTexture, uv).r;
 
         if (uv.y <=0) {
             color = vec4(0.0, 0.0, 0.0, 0.0);
