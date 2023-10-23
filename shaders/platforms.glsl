@@ -80,8 +80,8 @@ void fragment(vec2 uv, vec2 pos, inout vec4 color) {
 
     color = vec4(0, 0, 0, 0);
 
-    // iterate 0..5
-    for (int i = 0; i < 6; i++) {
+
+    for (int i = 0; i < 18; i++) {
         vec4 platform = platformsAB[i];
 
         vec2 a = platform.xy;

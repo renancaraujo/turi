@@ -19,7 +19,6 @@ class PlatformsSamplerOwner extends SamplerOwner {
   @override
   void update(double dt) {
     super.update(dt);
-
     _platforms = world.getPlatforms();
   }
 

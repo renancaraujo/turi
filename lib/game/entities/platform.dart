@@ -89,7 +89,7 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
 
   final PlatformColor color;
 
-  double initialGlowGama = 6.1;
+  double initialGlowGama = 10;
   double glowGama = 0;
 
   final effectController = GoodCurvedEffectController(
@@ -102,6 +102,7 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
   Future<void> onLoad() async {
     await super.onLoad();
     await add(glowEffect);
+    height = 40;
   }
 
   @override
@@ -137,24 +138,6 @@ class Platform extends PositionComponent with HasGameRef<CrystalBallGame> {
     if (y > game.world.reaper.y) {
       removeFromParent();
     }
-  }
-
-  @override
-  void renderTree(Canvas canvas) {
-    if (canvas is SamplerCanvas && canvas.owner is PlatformsSamplerOwner) {
-      super.renderTree(canvas);
-    }
-    if (canvas is! SamplerCanvas) {
-      super.renderTree(canvas);
-    }
-  }
-
-  @override
-  void renderDebugMode(Canvas canvas) {
-    if (canvas is SamplerCanvas && canvas.owner is PlatformsSamplerOwner) {
-      return;
-    }
-    super.renderDebugMode(canvas);
   }
 }
 
