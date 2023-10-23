@@ -27,7 +27,7 @@ void fragment(vec2 uv, vec2 pos, inout vec4 color) {
         vec2 oguv = uv.xy;
         uv.y = 2.0 * uReflecty - uv.y;
         uv.y = uReflecty + (uv.y - uReflecty) * 3;
-        uv.x = uv.x + sin(1 /(oguv.y-uReflecty+0.5)+uTime*1.0)*0.01;
+        uv.x = uv.x +(sin((oguv.y-uReflecty/1)+uTime*1.0)*0.01);
         uv.y = uv.y + cos(1./(oguv.y-uReflecty)+uTime*1.0)*0.03;
 
         waterColor = vec4(1, 1, 1.0, 1.0);

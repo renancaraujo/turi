@@ -29,12 +29,15 @@ class AppBlocObserver extends BlocObserver {
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   FlutterError.onError = (details) {
+    print(details.stack);
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
 
   WidgetsFlutterBinding.ensureInitialized();
   final storage = await HydratedStorage.build(
-    storageDirectory: await getApplicationDocumentsDirectory(),
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getApplicationDocumentsDirectory(),
   );
 
   HydratedBloc.storage = storage;

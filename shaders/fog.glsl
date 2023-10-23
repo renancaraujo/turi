@@ -13,7 +13,6 @@ uniform float uTime;
 out vec4 fragColor;
 
 
-
 // Thanks iq:
 // https://www.shadertoy.com/view/lsf3WH
 // Copyright © 2013 Inigo Quilez

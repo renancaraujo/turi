@@ -42,7 +42,7 @@ class GameStateSync extends Component
           platform.removeFromParent();
         }
         timer = Timer(
-          1,
+          2,
           onTick: bloc.setInitial,
         );
     }
