@@ -32,6 +32,7 @@ class FogSamplerOwner extends SamplerOwner {
   }
 
   void applyFog(Size size, Canvas canvas) {
+
     final origin = cameraComponent!.visibleWorldRect.topLeft.toVector2();
 
     shader.setFloatUniforms((value) {
@@ -59,7 +60,7 @@ class FogSamplerOwner extends SamplerOwner {
         Offset.zero & size,
         Paint()
           ..shader = shader
-          ..blendMode = BlendMode.darken,
+          // ..blendMode = BlendMode.darken,
       )
       ..restore();
   }

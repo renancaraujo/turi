@@ -37,10 +37,14 @@ void fragment(vec2 uv, vec2 pos, inout vec4 color) {
             color = vec4(0.0, 0.0, 0.0, 0.0);
             return;
         }
+        color = texture(tTexture, uv) * waterColor;
+        return;
     }
 
+    color = vec4(0.0, 0.0, 0.0, 0.0);
 
-    color = texture(tTexture, uv) * waterColor;
+
+
 }
 
 void main() {

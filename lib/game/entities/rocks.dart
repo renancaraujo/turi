@@ -74,10 +74,15 @@ class SideRocksSpawner extends Component with HasGameRef<CrystalBallGame> {
 class SideRock extends PositionComponent with HasGameRef<CrystalBallGame> {
   SideRock({
     required Vector2 super.position,
-    required bool right,
+    required this.right,
   }) : super(
           size: kSideRocksRSize,
-        ) {
+        );
+
+  final bool right;
+
+  @override
+  FutureOr<void> onLoad() {
     if (right) {
       position.x = kCameraSize.width / 2 - 120;
       anchor = Anchor.bottomLeft;
@@ -96,6 +101,7 @@ class SideRock extends PositionComponent with HasGameRef<CrystalBallGame> {
         ),
       );
     }
+    return super.onLoad();
   }
 
   @override
@@ -113,7 +119,15 @@ class SideRockRightSprite extends SpriteComponent
   SideRockRightSprite({
     required Vector2 super.size,
   }) : super() {
+
+  }
+
+  @override
+  FutureOr<void> onLoad() {
+
     sprite = Sprite(game.assetsCache.rocksRightImage);
+
+    return super.onLoad();
   }
 
   @override
@@ -129,7 +143,13 @@ class SideRockLeftSprite extends SpriteComponent
   SideRockLeftSprite({
     required Vector2 super.size,
   }) : super() {
+
+  }
+
+  @override
+  FutureOr<void> onLoad() {
     sprite = Sprite(game.assetsCache.rocksLeftImage);
+    return super.onLoad();
   }
 
   @override
@@ -164,7 +184,14 @@ class BottomRock1Sprite extends SpriteComponent
   BottomRock1Sprite({
     required Vector2 super.size,
   }) : super() {
+
+  }
+
+
+  @override
+  FutureOr<void> onLoad() {
     sprite = Sprite(game.assetsCache.rockBottom1Image);
+    return super.onLoad();
   }
 
   @override
@@ -211,7 +238,13 @@ class BottomRock2Sprite extends SpriteComponent
   BottomRock2Sprite({
     required Vector2 super.size,
   }) : super() {
+  }
+
+  @override
+  FutureOr<void> onLoad() {
     sprite = Sprite(game.assetsCache.rockBottom1Image);
+
+    return super.onLoad();
   }
 
   @override
@@ -252,9 +285,15 @@ class BgRockBaseSprite extends SpriteComponent
   BgRockBaseSprite({
     required Vector2 super.size,
   }) : super() {
+
+  }
+
+  @override
+  FutureOr<void> onLoad() {
     sprite = Sprite(game.assetsCache.bgRockBaseImage);
 
     opacity = 0.2;
+    return super.onLoad();
   }
 
   @override
@@ -373,10 +412,16 @@ class BgPillarRockSprite extends SpriteComponent
   BgPillarRockSprite({
     required Vector2 super.size,
   }) : super() {
+
+  }
+
+  @override
+  FutureOr<void> onLoad() {
     sprite = Sprite(game.assetsCache.bgRockPillarImage);
 
     opacity = 0.1;
     paint.blendMode = BlendMode.overlay;
+    return super.onLoad();
   }
 
   @override

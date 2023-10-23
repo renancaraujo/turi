@@ -42,7 +42,7 @@ class PlatformsSamplerOwner extends SamplerOwner {
         Offset.zero & size,
         Paint()
           ..shader = shader
-          ..blendMode = BlendMode.multiply,
+          // ..blendMode = BlendMode.plus,
       )
       ..restore();
   }

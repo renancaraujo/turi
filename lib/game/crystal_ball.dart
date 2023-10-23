@@ -12,13 +12,12 @@ import 'package:flame/input.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart' show FlutterError, FlutterErrorDetails;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CrystalBallGame extends FlameGame<CrystalWorld>
-    with
-        HasKeyboardHandlerComponents,
-        HasCollisionDetection,
-        SingleGameInstance {
-  CrystalBallGame({
+    with HasKeyboardHandlerComponents, HasCollisionDetection {
+  CrystalBallGame(
+    this.mode, {
     required this.textStyle,
     required this.random,
     required this.gameCubit,
@@ -41,11 +40,24 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
         ) {
     images.prefix = '';
     camera.removeFromParent();
-    add(cameraWithCameras);
 
-    add(dummyWorld);
+    switch (mode) {
+      case 0:
+        addCamera(classicCamera);
+      case 1:
+        addCamera(platformGlowCamera);
+      case 2:
+        addCamera(theBallGlowCamera);
+      case 3:
+        addCamera(fogCamera);
+      case 4:
+      case 5:
+        add(cameraWithCameras);
+        add(dummyWorld);
+    }
+
     world.addAll([
-      inputHandler = InputHandler(),
+      // inputHandler = InputHandler(),
     ]);
   }
 
@@ -61,6 +73,8 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
 
   late final InputHandler inputHandler;
 
+  final int mode;
+
   FutureOr<void> addCamera(CameraComponent component) {
     return add(component..follow(world.cameraTarget));
   }
@@ -73,6 +87,7 @@ class CrystalBallGame extends FlameGame<CrystalWorld>
       assetsCache.rocksShader,
       assetsCache.fogShader,
       classicCamera,
+      mode,
       world: world,
     ),
     world: dummyWorld,

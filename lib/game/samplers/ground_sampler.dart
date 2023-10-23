@@ -11,13 +11,15 @@ class GroundSamplerOwner extends SamplerOwner {
     super.shader,
     this.rocksShader,
     this.fogShader,
-    this.innerCamera, {
+    this.innerCamera, this.mode, {
     required this.world,
   });
 
   final CameraComponent innerCamera;
 
   final CrystalWorld world;
+
+  final int mode;
 
   final FragmentShader rocksShader;
   final FragmentShader fogShader;
@@ -51,22 +53,25 @@ class GroundSamplerOwner extends SamplerOwner {
     final clipRect = spos.toOffset() & ssize.toSize();
     canvas.clipRect(clipRect, doAntiAlias: false);
 
-    shader
-      ..setFloatUniforms((value) {
-        value
-          ..setSize(size)
-          ..setFloat(uvGround)
-          ..setFloat(time)
-          ..setFloat(limitY.y);
-      })
-      ..setImageSampler(0, images[0]);
+    if(mode == 4) {
+      shader
+        ..setFloatUniforms((value) {
+          value
+            ..setSize(size)
+            ..setFloat(uvGround)
+            ..setFloat(time)
+            ..setFloat(limitY.y);
+        })
+        ..setImageSampler(0, images[0]);
 
-    canvas.drawRect(
-      Offset.zero & size,
-      Paint()
-        ..shader = shader
-        ..blendMode = BlendMode.lighten,
-    );
+      canvas.drawRect(
+        Offset.zero & size,
+        Paint()
+          ..shader = shader
+          ..blendMode = BlendMode.lighten,
+      );
+      return;
+    }
 
     // fog
 

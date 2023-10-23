@@ -20,6 +20,12 @@ class PlatformSpawner extends Component
 
   Platform? lastPlatform;
 
+  @override
+  void onLoad() {
+    super.onLoad();
+    spawnIntitialPlatforms();
+  }
+
   Future<Platform> spawnPlatform({bool advance = true, double? avoidX}) async {
     final width = kPlatformMinWidth +
         random.nextDoubleAntiSmooth() * kPlatformWidthVariation;
@@ -100,11 +106,13 @@ class PlatformSpawner extends Component
     needsPreloadCheck = true;
   }
 
+
   @override
   void onNewState(GameState state) {
     super.onNewState(state);
     switch (state) {
       case GameState.initial:
+
         needsPreloadCheck = false;
         currentMinY = kStartPlatformHeight;
       case GameState.starting:
