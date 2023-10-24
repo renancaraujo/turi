@@ -62,7 +62,6 @@ vec4 processPlatform(vec2 uv, vec2 a, vec2 b, vec3 colorL, vec3 colorR, float gl
     float light = acos(dot(normalize(a - uv), normalize(b - uv))) / PI;
 
     light = clamp(light, 0.0, 1.0);
-//    light *= 0.9;
 
     if (uv.y > a.y) {
         light *= 0.7;
@@ -77,9 +76,7 @@ vec4 processPlatform(vec2 uv, vec2 a, vec2 b, vec3 colorL, vec3 colorR, float gl
 }
 
 void fragment(vec2 uv, vec2 pos, inout vec4 color) {
-
     color = vec4(0, 0, 0, 0);
-
 
     for (int i = 0; i < 18; i++) {
         vec4 platform = platformsAB[i];
@@ -94,12 +91,9 @@ void fragment(vec2 uv, vec2 pos, inout vec4 color) {
         vec3 colorL = colorsL[i];
         vec3 colorR = colorsR[i];
 
-
         color.rgba += processPlatform(uv, a, b, colorL, colorR, glowGamas[i]);
     }
 }
-
-
 
 void main() {
     vec2 pos = FlutterFragCoord().xy;
@@ -107,7 +101,6 @@ void main() {
     vec4 color;
 
     fragment(uv, pos, color);
-
 
     // post process
     float mdf = 0.07;
@@ -120,8 +113,5 @@ void main() {
         color += noise * mdf;
     }
 
-
     fragColor = color;
-
-
 }

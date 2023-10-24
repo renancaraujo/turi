@@ -62,7 +62,7 @@ void fragment(vec2 cuv, vec2 pos, inout vec4 color, float timeMultiplier) {
 
     float f = fractalNoise(uv);
     f *= tr;
-    f*= 0.45;
+    f*= 0.65;
 
     f = pow(f, 1.8);
     color = vec4( vec3(0.8, 0.4, 1.0) * f, f);

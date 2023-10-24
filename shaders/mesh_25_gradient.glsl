@@ -224,9 +224,7 @@ vec4 fragment(vec2 uv, vec2 pos) {
 void main() {
     vec2 pos = FlutterFragCoord().xy;
     vec2 uv = pos / uSize;
-
     vec4 color = fragment(uv, pos);
-
 
     if(showGrain == 1.0) {
         float mdf = 0.07;
@@ -235,8 +233,6 @@ void main() {
         mdf *= (luma - 0.33) *3;
         color += noise * mdf;
     }
-
-
 
     fragColor = color;
 }

@@ -43,21 +43,17 @@ class GroundSamplerOwner extends SamplerOwner {
     final groundpos = world.ground.rectangle.absolutePosition + Vector2(0, 100);
     final uvGround = worldToUv(groundpos).y;
 
-    final limitY =
-        worldToUv(world.cameraTarget.position + kCameraSize.asVector2 / 2);
-
     final ssize = (innerCamera.viewport.size - Vector2.all(2))..ceil();
     final spos = (innerCamera.viewport.position + Vector2.all(2))..ceil();
-    final clipRect = spos.toOffset() & ssize.toSize();
-    canvas.clipRect(clipRect, doAntiAlias: false);
+
+    canvas.clipRect(spos.toOffset() & ssize.toSize(), doAntiAlias: false);
 
     shader
       ..setFloatUniforms((value) {
         value
           ..setSize(size)
           ..setFloat(uvGround)
-          ..setFloat(time)
-          ..setFloat(limitY.y);
+          ..setFloat(time);
       })
       ..setImageSampler(0, images[0]);
 
@@ -65,7 +61,7 @@ class GroundSamplerOwner extends SamplerOwner {
       Offset.zero & size,
       Paint()
         ..shader = shader
-        ..blendMode = BlendMode.lighten,
+        ..blendMode = BlendMode.srcOver,
     );
 
     // fog

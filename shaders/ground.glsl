@@ -7,40 +7,30 @@ precision highp float;
 uniform vec2 uSize;
 uniform float uReflecty;
 uniform float uTime;
-uniform float uLimitY;
 
 uniform sampler2D tTexture;
-
 
 out vec4 fragColor;
 
 void fragment(vec2 uv, vec2 pos, inout vec4 color) {
-
     vec4 waterColor = vec4(1.0);
-
-    if(uv.y > uLimitY) {
-        color = vec4(0.0, 0.0, 0.0, 0.0);
-        return;
-    }
-
+    color = vec4(0.0);
+    vec2 reflectedUv = uv.xy;
     if (uv.y >= uReflecty) {
-        vec2 oguv = uv.xy;
-        uv.y = 2.0 * uReflecty - uv.y;
-        uv.y = uReflecty + (uv.y - uReflecty) * 3;
-        uv.x = uv.x +(sin((oguv.y-uReflecty/1)+uTime*1.0)*0.01);
-        uv.y = uv.y + cos(1./(oguv.y-uReflecty)+uTime*1.0)*0.03;
+        reflectedUv.y = 2.0 * uReflecty - reflectedUv.y;
+        reflectedUv.y = uReflecty + (reflectedUv.y - uReflecty) * 3;
+        reflectedUv.x = reflectedUv.x +(sin((uv.y-uReflecty/1)+uTime*1.0)*0.01);
+        reflectedUv.y = reflectedUv.y + cos(1./(uv.y-uReflecty)+uTime*1.0)*0.03;
 
-        waterColor = vec4(1, 1, 1.0, 1.0);
-        waterColor.rgb *=1 - ((oguv.y-uReflecty) / (1.0-uReflecty));
+        waterColor = vec4(1.0);
+        waterColor.rgb *=1 - ((uv.y-uReflecty) / (1.0-uReflecty));
 
-        if (uv.y <=0) {
-            color = vec4(0.0, 0.0, 0.0, 0.0);
+        if (reflectedUv.y <=0) {
+            color = vec4(0.0);
             return;
         }
     }
-
-
-    color = texture(tTexture, uv) * waterColor;
+    color = texture(tTexture, reflectedUv) * waterColor;
 }
 
 void main() {

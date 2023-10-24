@@ -5,12 +5,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
 class Ground extends Component {
-  Ground()
-      : super(
-          children: [
-            Rectangle(kPlayerSize.height / 2),
-          ],
-        ) {
+  Ground() : super(children: [Rectangle(kPlayerSize.height / 2)]) {
     rectangle = children.first as Rectangle;
   }
 
