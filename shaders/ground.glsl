@@ -5,40 +5,41 @@ precision highp float;
 #include <flutter/runtime_effect.glsl>
 
 uniform vec2 uSize;
-uniform float uReflecty;
+uniform float uWaterLevel;
 uniform float uTime;
 
-uniform sampler2D tTexture;
+uniform sampler2D tGameCanvas;
 
 out vec4 fragColor;
 
-void fragment(vec2 uv, vec2 pos, inout vec4 color) {
+vec4 fragment(vec2 uv) {
     vec4 waterColor = vec4(1.0);
-    color = vec4(0.0);
     vec2 reflectedUv = uv.xy;
-    if (uv.y >= uReflecty) {
-        reflectedUv.y = 2.0 * uReflecty - reflectedUv.y;
-        reflectedUv.y = uReflecty + (reflectedUv.y - uReflecty) * 3;
-        reflectedUv.x = reflectedUv.x +(sin((uv.y-uReflecty/1)+uTime*1.0)*0.01);
-        reflectedUv.y = reflectedUv.y + cos(1./(uv.y-uReflecty)+uTime*1.0)*0.03;
+    if (uv.y >= uWaterLevel) {
+        // invert y to equivalent position above water
+        reflectedUv.y = 2.0 * uWaterLevel - reflectedUv.y;
+        // magnify the reflection
+        reflectedUv.y = uWaterLevel + (reflectedUv.y - uWaterLevel) * 3;
+        // add horizontal waves
+        reflectedUv.x = reflectedUv.x +(sin((uv.y-uWaterLevel/1)+ uTime *1.0)*0.01);
+        // add vertical waves
+        reflectedUv.y = reflectedUv.y + cos(1./(uv.y-uWaterLevel)+ uTime *1.0)*0.03;
 
-        waterColor = vec4(1.0);
-        waterColor.rgb *=1 - ((uv.y-uReflecty) / (1.0-uReflecty));
-
+        // Magnification can create uv outside of [0,1] range
         if (reflectedUv.y <=0) {
-            color = vec4(0.0);
-            return;
+            return vec4(0.0);
         }
+
+        // fade out reflection
+        waterColor = vec4(1.0);
+        waterColor.rgb *= 1 - ((uv.y-uWaterLevel) / (1.0-uWaterLevel));
     }
-    color = texture(tTexture, reflectedUv) * waterColor;
+
+    return texture(tGameCanvas, reflectedUv) * waterColor;
 }
 
 void main() {
     vec2 pos = FlutterFragCoord().xy;
     vec2 uv = pos / uSize;
-    vec4 color;
-
-    fragment(uv, pos, color);
-
-    fragColor = color;
+    fragColor = fragment(uv);
 }
