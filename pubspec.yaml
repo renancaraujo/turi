@@ -7,7 +7,7 @@ environment:
   sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
-  audioplayers: ^5.2.0
+  audioplayers: ^5.2.1
   binarize: ^1.5.0
   bloc: ^8.1.2
   equatable: ^2.0.5
