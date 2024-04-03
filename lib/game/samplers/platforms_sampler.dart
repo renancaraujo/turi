@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:crystal_ball/game/game.dart';
@@ -50,7 +51,9 @@ class PlatformsSamplerOwner extends SamplerOwner {
 
 extension on UniformsSetter {
   void setVector64(Vector vector) {
-    setFloats(vector.storage);
+    var storage = Float32List.fromList(vector.storage);
+  
+    setFloats(storage);
   }
 
   void setRGB(Color color) {
