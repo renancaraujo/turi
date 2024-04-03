@@ -1,4 +1,4 @@
-import 'package:crystal_ball/game/crystal_ball.dart';
+import 'package:crystal_ball/game/crystal_ball_game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/animation.dart';

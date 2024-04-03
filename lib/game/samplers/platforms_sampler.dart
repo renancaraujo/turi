@@ -51,7 +51,7 @@ class PlatformsSamplerOwner extends SamplerOwner {
 
 extension on UniformsSetter {
   void setVector64(Vector vector) {
-    var storage = Float32List.fromList(vector.storage);
+    final storage = Float32List.fromList(vector.storage);
   
     setFloats(storage);
   }

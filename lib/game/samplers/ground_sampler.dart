@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:crystal_ball/game/game.dart';
 import 'package:flame/camera.dart';
 import 'package:flame/extensions.dart';
-import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_shaders/flutter_shaders.dart';
 
 class GroundSamplerOwner extends SamplerOwner {

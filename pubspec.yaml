@@ -11,7 +11,7 @@ dependencies:
   binarize: ^1.5.0
   bloc: ^8.1.2
   equatable: ^2.0.5
-  flame: 1.10.0
+  flame: 1.17.0
   flame_audio: ^2.1.2
   flame_bloc: ^1.10.4
   flutter:
@@ -36,7 +36,6 @@ flutter:
   generate: true
 
   assets:
-    - assets/audio/
     - assets/images/
     - assets/licenses/macondo/
     - google_fonts/

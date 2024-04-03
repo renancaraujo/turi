@@ -5,9 +5,6 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 
-// ignore: implementation_imports
-import 'package:flame/src/camera/viewports/fixed_resolution_viewport.dart';
-
 class SamplerCamera<OwnerType extends SamplerOwner> extends CameraComponent {
   SamplerCamera({
     required this.samplerOwner,
