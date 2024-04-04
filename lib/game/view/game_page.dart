@@ -269,25 +269,7 @@ class _DynamicBackgroundState extends State<DynamicBackground> {
             final isPlaying = context.read<GameCubit>().isPlaying;
             return isPlaying && (current - lastComputedScore).abs() > 400;
           },
-          listener: (context, state) {
-            lastComputedScore = state;
-            if (state > 600 && state < 10000) {
-              final progress = state / 9400;
-              setState(() {
-                data = Mesh25Data.lerp(postIntro, postIntro2, progress);
-              });
-            }
-            if (state > 10000 && state < 100000) {
-              final progress = (state - 10000) / 90000;
-              setState(() {
-                data = Mesh25Data.lerp(postIntro2, postIntro3, progress);
-              });
-            } else if (state > 100000 && data != postIntro3) {
-              setState(() {
-                data = postIntro3;
-              });
-            }
-          },
+          listener: (context, state) {},
         ),
       ],
       child: AnimatedMeshGradient(
