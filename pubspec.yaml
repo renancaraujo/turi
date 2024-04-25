@@ -9,7 +9,7 @@ environment:
 dependencies:
   audioplayers: ^5.2.1
   binarize: ^1.5.0
-  bloc: ^8.1.2
+  bloc: ^8.1.4
   equatable: ^2.0.5
   flame: 1.17.0
   flame_audio: ^2.10.1
