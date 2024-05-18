@@ -52,7 +52,7 @@ class PlatformsSamplerOwner extends SamplerOwner {
 extension on UniformsSetter {
   void setVector64(Vector vector) {
     final storage = Float32List.fromList(vector.storage);
-  
+
     setFloats(storage);
   }
 

@@ -108,23 +108,23 @@ class _GameViewState extends State<GameView> {
     return ColoredBox(
       color: Colors.black,
       child: GameWidget(
-        backgroundBuilder: (context) {
-          return const Center(
-            child: AspectRatio(
-              aspectRatio: 9 / 16,
-              child: DynamicBackground(),
-            ),
-          );
-        },
+        // backgroundBuilder: (context) {
+        //   return const Center(
+        //     child: AspectRatio(
+        //       aspectRatio: 9 / 16,
+        //       child: DynamicBackground(),
+        //     ),
+        //   );
+        // },
         overlayBuilderMap: {
-          'vignette': (context, game) {
-            return const Center(
-              child: AspectRatio(
-                aspectRatio: 9 / 16,
-                child: MeshVigenette(),
-              ),
-            );
-          },
+          // 'vignette': (context, game) {
+          //   return const Center(
+          //     child: AspectRatio(
+          //       aspectRatio: 9 / 16,
+          //       child: MeshVigenette(),
+          //     ),
+          //   );
+          // },
           'score': (context, game) {
             return const Center(
               child: AspectRatio(
@@ -148,7 +148,11 @@ class _GameViewState extends State<GameView> {
             );
           },
         },
-        initialActiveOverlays: const ['vignette', 'score', 'highscore'],
+        initialActiveOverlays: const [
+          // 'vignette',
+          'score',
+          'highscore',
+        ],
         game: _game!,
       ),
     );
