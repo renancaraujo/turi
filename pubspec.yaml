@@ -7,13 +7,13 @@ environment:
   sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
-  audioplayers: ^5.2.1
+  audioplayers: ^6.0.0
   binarize: ^1.5.0
   bloc: ^8.1.4
   equatable: ^2.0.5
-  flame: 1.17.0
-  flame_audio: ^2.10.1
-  flame_bloc: ^1.11.1
+  flame: 1.18.0
+  flame_audio: ^2.10.2
+  flame_bloc: ^1.12.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
