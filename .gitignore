@@ -112,3 +112,10 @@ app.*.map.json
 !.idea/codeStyles/
 !.idea/dictionaries/
 !.idea/runConfigurations/
+
+
+android
+ios
+macos
+windows
+linux

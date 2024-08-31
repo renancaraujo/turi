@@ -44,7 +44,7 @@ class MeshGradient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShaderBuilder(
-      assetKey: 'shaders/mesh_25_gradient.glsl',
+      assetKey: 'shaders/mesh_25_gradient.frag',
       (BuildContext context, ui.FragmentShader shader, Widget? child) {
         return CustomPaint(
           painter: MeshGradientPainter(
