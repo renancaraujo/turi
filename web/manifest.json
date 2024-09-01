@@ -1,6 +1,6 @@
 {
-    "name": "crystal_ball",
-    "short_name": "crystal_ball",
+    "name": "turi",
+    "short_name": "turi",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

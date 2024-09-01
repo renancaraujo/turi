@@ -174,11 +174,11 @@ class AssetsCache {
       rocksShader,
       fogShader,
     ] = await Future.wait([
-      _loadShader('shaders/platforms.glsl'),
-      _loadShader('shaders/the_ball.glsl'),
-      _loadShader('shaders/ground.glsl'),
-      _loadShader('shaders/rocks.glsl'),
-      _loadShader('shaders/fog.glsl'),
+      _loadShader('shaders/platforms.frag'),
+      _loadShader('shaders/the_ball.frag'),
+      _loadShader('shaders/ground.frag'),
+      _loadShader('shaders/rocks.frag'),
+      _loadShader('shaders/fog.frag'),
     ]);
 
     return AssetsCache(

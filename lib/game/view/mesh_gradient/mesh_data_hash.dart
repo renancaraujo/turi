@@ -20,7 +20,7 @@ import 'package:binarize/binarize.dart'
         uint8;
 import 'package:binarize/binarize.dart' as binarize_types show float32, uint8;
 import 'package:crystal_ball/game/game.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 
 String bytesToHex(List<int> bytes) {
   final uncompressed = zlib.encode(bytes);
