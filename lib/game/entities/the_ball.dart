@@ -78,7 +78,9 @@ class TheBall extends PositionComponent
       return;
     }
 
-    velocity.y += _gravity;
+
+
+    velocity.y += 8500 * (dt);
     final horzV = pow(velocity.y.abs(), 1.8) * 0.0015;
     velocity.x = game.inputHandler.directionalCoefficient * horzV;
 
