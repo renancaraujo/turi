@@ -74,7 +74,7 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
-  FlameGame? _game;
+  CrystalBallGame? _game;
 
   late final random = Random();
   late final gameCubit = context.read<GameCubit>();
@@ -107,7 +107,7 @@ class _GameViewState extends State<GameView> {
 
     return ColoredBox(
       color: Colors.black,
-      child: GameWidget(
+      child: GameWidget<CrystalBallGame>(
         // backgroundBuilder: (context) {
         //   return const Center(
         //     child: AspectRatio(
