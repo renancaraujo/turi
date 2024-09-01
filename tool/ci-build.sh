@@ -19,6 +19,6 @@ export PATH=`pwd`/flutter/bin:$PATH
 
 
 # Run flutter commands
+flutter channel stable
 flutter doctor
-
 flutter build web --wasm --release --no-tree-shake-icons
